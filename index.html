@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Nishith P's Portfolio</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+    <meta name="theme-color" content="#000000">
+    <meta name="Description" content="This is the Official Portfolio of Nishith P">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Indie+Flower&family=Pacifico&family=Paytone+One&family=Righteous&family=Russo+One&family=Source+Sans+Pro&display=swap"
+        rel="stylesheet">
+    <link
+        href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic'
+        rel='stylesheet' type='text/css'>
+    <script src="scroll.js" type="text/javascript"></script>
+    <script src="https://kit.fontawesome.com/50e1c4696b.js" crossorigin="anonymous"></script>
+    <style id="js-inject"></style>
+    <meta name="google-site-verification" content="uAcqFBblZGQ_cLpxIaZQFs1sDBQFM1rVO223h0Oi-RE" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+
+    <header>
+        <p class="title">Portfolio</p>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#certificates">Certificates</a></li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="https://blog.nishithpisadev.ml" target="_blank">Blog</a></li>
+            </ul>
+            <button class="dropbtn" hidden>
+                <i class="fa fa-caret-down" id="arrow"></i>
+            </button>
+            <script>
+                document.getElementById("arrow").addEventListener("click", () => {
+                    let activeStyle =
+                        `
+        @media all and (min-width: 320px) and (max-width: 426px) {
+            .nav-links {
+                display: block;
+                flex-direction: column;
+            }
+        
+            .dropbtn {
+                display: block;
+                font-size: 16px;
+                border: none;
+                outline: none;
+                color: white;
+                padding: 14px 16px;
+                background-color: inherit;
+                font-family: inherit;
+                margin: 0;
+            }
+
+            #arrow {
+                padding-left: 20px;
+            }
+        
+            header {
+                display: block; 
+            }
+        
+            .title {
+                border-right: none;
+                border-bottom: 1px solid white;
+            }
+        }
+        `
+
+                    let inactiveStyle = `
+        @media all and (min-width: 320px) and (max-width: 426px) {
+            .nav-links {
+                display: none;
+                flex-direction: row;
+            }
+
+            header {
+                display: flex;
+            }
+
+            title {
+                border-bottom: none;
+                border-right: 1px solid white;
+            }
+
+            #arrow {
+                padding-left: 0px;
+            }
+        }
+
+            `
+                    let element = document.getElementById("arrow").classList;
+                    var stylesheet = document.getElementById('js-inject');
+
+                    if (element.contains("fa-caret-down")) {
+                        stylesheet.innerText = activeStyle;
+                        element.replace("fa-caret-down", "fa-caret-up")
+                    } else if (element.contains("fa-caret-up")) {
+                        stylesheet.innerText = inactiveStyle;
+                        element.replace("fa-caret-up", "fa-caret-down")
+                    }
+
+                    document.head.appendChild(stylesheet);
+
+                })
+            </script>
+        </nav>
+    </header>
+    <main>
+        <div class="parallax profile-gradient" id="profile">
+            <!-- particles.js container -->
+            <div id="particles-js"></div>
+            <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+            <script src="app.js"></script>
+            <h1>Hey! 👋</h1>
+            <div class="profile-pic">
+                <img src="https://avatars.githubusercontent.com/u/34577844?v=4" alt="me">
+            </div>
+            <h2 class="name">I am Nishith P</h2>
+            <br>
+            <script src='type.js'></script>
+            <p class="bio" id="bio"><span id="blinking-cursor">|</span></p>
+        </div>
+        
+        <div id="roadmap">
+            <!-- The Timeline -->
+            <h2 class="subheadings">Roadmap</h2>
+
+            <ul class="timeline" id="timeline">
+            </ul>
+
+        </div>
+        <script>
+            let template =
+                `
+                <li>
+                    <div class="{{Direction}}">
+                        <div class="flag-wrapper">
+                            <span class="flag">{{Flag}}</span>
+                            <span class="time-wrapper"><span class="time">{{Time}}</span></span>
+                        </div>
+                        <div class="desc">{{Description}}</div>
+                    </div>
+                </li>
+            `
+            let code = `
+            <div class="mySlides">
+                    <img src="{{image_url}}" style="width:100%">
+                </div>
+            `;
+
+            $.getJSON("https://assets.nishithpisadev.ml/website/data.json", function (json) {
+                appendData(json)
+            });
+
+            function appendData(data) {
+                let timeline = document.getElementById("timeline");
+                let slideshow = document.getElementById("slideshow");
+
+
+                data["Roadmap"].reverse().forEach(entry => {
+                    let temp = template;
+                    let placeholders = {
+                        "{{Direction}}": entry.direction,
+                        "{{Flag}}": entry.flag,
+                        "{{Time}}": entry.time,
+                        "{{Description}}": entry.description
+                    }
+
+                    for (let placeholder of Object.keys(placeholders))
+                        temp = temp.replace(placeholder, placeholders[placeholder])
+
+                    timeline.innerHTML += temp;
+
+                })
+
+                data["Certificates"].forEach(entry => {
+                    let temp = code.replace("{{image_url}}", entry)
+                    slideshow.innerHTML += temp;
+                })
+                showSlides(1)
+            }
+        </script>
+        <br>
+        <div id="certificates">
+            <h2 class="subheadings">Certificates</h2>
+            <br>
+            <br>
+            <div class="slideshow-container" id="slideshow">
+
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+            <br>
+        </div>
+        <script>
+            var slideIndex = 1;
+            showSlides(slideIndex);
+
+            function plusSlides(n) {
+                showSlides(slideIndex += n);
+            }
+
+            function currentSlide(n) {
+                showSlides(slideIndex = n);
+            }
+
+            function showSlides(n) {
+                var i;
+                var slides = document.getElementsByClassName("mySlides");
+                var dots = document.getElementsByClassName("dot");
+                if (n > slides.length) {
+                    slideIndex = 1
+                }
+                if (n < 1) {
+                    slideIndex = slides.length
+                }
+                for (i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+                for (i = 0; i < dots.length; i++) {
+                    dots[i].className = dots[i].className.replace(" active", "");
+                }
+                slides[slideIndex - 1].style.display = "block";
+                dots[slideIndex - 1].className += " active";
+            }
+        </script>
+
+        <br>
+
+        <div id="contact">
+            <h2 class="subheadings">Contact</h2>
+
+            <div id="contact-form">
+                <form name="contact-us" id="contact-us" action="https://emailer.nishithpisadev.ml/website/contact"
+                    method="POST">
+                    <input type="text" id="name" name="name" placeholder="Name" required>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                    <textarea id="message" name="message" placeholder="Type your message here..."></textarea>
+                    <button id="submit" type="submit">Submit</button>
+                </form>
+                <p id="form-response" style="color: white; font-family: 'Futura LT', monospace;"></p>
+
+                <div id="social-icons">
+                    <a href="https://www.facebook.com/nishithp2004"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/nishith_2004/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://twitter.com/nishithp2004"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="https://www.snapchat.com/add/nishith_p"><i class="fa-brands fa-snapchat"></i></a>
+                    <a href="https://www.youtube.com/channel/UCGwt79UmcqyGh8SjX_7T5Jg?view_as=subscriber"><i
+                            class="fa-brands fa-youtube"></i></a>
+                    <a href="https://www.github.com/nishithp2004"><i class="fa-brands fa-github-alt"></i></a>
+                    <a href="https://www.gitlab.com/nishithp2004"><i class="fa-brands fa-gitlab"></i></a>
+                    <a href="https://www.linkedin.com/in/nishith-p-253a79209/"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="mailto:hi@nishithpisadev.ml"><i class="fa-solid fa-at"></i></a>
+                    <a href="https://discordapp.com/users/402417983441469440"><i class="fa-brands fa-discord"></i></a>
+                </div>
+
+            </div>
+
+            <script>
+                $("#contact-us").submit(function (e) {
+                    e.preventDefault();
+                    let form = document.getElementById("contact-us");
+                    let formData = new FormData(form);
+                    let payload = {};
+
+                    for (let key of formData.keys())
+                        payload[key] = formData.get(key);
+
+                    /* fetch(form.action, {
+                            mode: 'no-cors',
+                            method: form.method,
+                            body: JSON.stringify(payload)
+                        })
+                        .then(() => {
+                            let msg = document.getElementById("message");
+                            msg.hidden = false;
+
+                            setTimeout(() => {
+                                msg.hidden = true;
+                            }, 5000)
+                        }) */
+
+                    $.ajax({
+                        url: form.action,
+                        method: form.method,
+                        data: payload,
+                        success: function (data) {
+                            form.reset();
+                            $('#form-response').html(
+                                `<em>Thank you! I will get in touch with you shortly :) </em>`);
+                            setTimeout(() => {
+                                $('#form-response').html(``);
+                            }, 10 * 1000)
+                        },
+                        error: function () {
+                            $('#form-response').html(`<em>There was an error</em>`);
+                            setTimeout(() => {
+                                $('#form-response').html(``);
+                            }, 10 * 1000)
+                        }
+                    });
+                    return false;
+                });
+            </script>
+        </div>
+
+        <br>
+
+        <footer>
+            <p>Made with ♥️ by Nishith P. All rights reserved &copy </p>
+        </footer>
+    </main>
+</body>
+
+</html>

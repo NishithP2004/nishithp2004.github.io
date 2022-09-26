@@ -1,0 +1,5 @@
+﻿{
+  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
+  "Domain": "nishithp.tech",
+  "Id": "4bcd8fd5-ef7d-49e2-8621-38b6a68a8bf1"
+}
