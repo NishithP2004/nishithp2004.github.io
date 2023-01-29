@@ -143,7 +143,6 @@
         </div>
         <script>
             var host = window.location.host;
-            var domain = host.substring(host.indexOf(".") + 1);
             let template =
                 `
                 <li>
@@ -162,7 +161,7 @@
                 </div>
             `;
 
-            $.getJSON(`https://assets.${domain}/website/data.json`, function (json) {
+            $.getJSON(`https://assets.${host}/website/data.json`, function (json) {
                 appendData(json)
             });
 
@@ -296,7 +295,7 @@
                         }) */
 
                     $.ajax({
-                        url: `https://emailer.${domain}/website/contact`,
+                        url: `https://emailer.${host}/website/contact`,
                         method: form.method,
                         data: payload,
                         success: function (data) {
