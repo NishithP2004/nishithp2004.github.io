@@ -19,7 +19,7 @@
     <link
         href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic'
         rel='stylesheet' type='text/css'>
-    <script src="scroll.js" type="text/javascript"></script>
+    <script src="js/scroll.js" type="text/javascript"></script>
     <script src="https://kit.fontawesome.com/50e1c4696b.js" crossorigin="anonymous"></script>
     <style id="js-inject"></style>
     <meta name="google-site-verification" content="uAcqFBblZGQ_cLpxIaZQFs1sDBQFM1rVO223h0Oi-RE" />
@@ -122,14 +122,14 @@
             <!-- particles.js container -->
             <div id="particles-js"></div>
             <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-            <script src="app.js"></script>
+            <script src="js/app.js"></script>
             <h1>Hey! 👋</h1>
             <div class="profile-pic">
-                <img src="https://avatars.githubusercontent.com/u/34577844?v=4" alt="me">
+                <img src="https://avatars.githubusercontent.com/u/34577844?v=4" alt="That's me">
             </div>
             <h2 class="name">I am Nishith P</h2>
             <br>
-            <script src='type.js'></script>
+            <script src='js/type.js'></script>
             <p class="bio" id="bio"><span id="blinking-cursor">|</span></p>
         </div>
         
@@ -142,6 +142,8 @@
 
         </div>
         <script>
+            var host = window.location.host;
+            var domain = host.substring(host.indexOf(".") + 1);
             let template =
                 `
                 <li>
@@ -160,7 +162,7 @@
                 </div>
             `;
 
-            $.getJSON("https://assets.nishithpisadev.ml/website/data.json", function (json) {
+            $.getJSON(`https://assets.${domain}/website/data.json`, function (json) {
                 appendData(json)
             });
 
@@ -243,7 +245,7 @@
             <h2 class="subheadings">Contact</h2>
 
             <div id="contact-form">
-                <form name="contact-us" id="contact-us" action="https://emailer.nishithpisadev.ml/website/contact"
+                <form name="contact-us" id="contact-us" action=""
                     method="POST">
                     <input type="text" id="name" name="name" placeholder="Name" required>
                     <input type="email" id="email" name="email" placeholder="Email" required>
@@ -294,7 +296,7 @@
                         }) */
 
                     $.ajax({
-                        url: form.action,
+                        url: `https://emailer.${domain}/website/contact`,
                         method: form.method,
                         data: payload,
                         success: function (data) {

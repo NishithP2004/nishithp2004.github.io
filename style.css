@@ -102,7 +102,7 @@ header ul li {
     -moz-box-shadow: 10px 10px 68px 0px rgba(0, 0, 0, 0.75);
     box-shadow: 10px 10px 68px 0px rgba(0, 0, 0, 0.75);
     z-index: 110;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.35s ease-in-out;
 }
 
 header ul a {
@@ -781,6 +781,7 @@ header {
         0 100px 80px rgba(0, 0, 0, 0.12);
     font-family: 'Futura LT', monospace;
     color: #111111;
+    font-size: medium;
     resize: none;
 }
 
@@ -816,11 +817,11 @@ header {
 #contact-form form button:hover {
     color: black;
     background-color: #fc0086;
-    transition: all 0.5s linear;
+    transition: all 0.35s linear;
 }
 
 #contact-form form textarea {
-    min-height: 10vh;
+    min-height: 15vh;
 }
 
 #contact-form form textarea::placeholder,
