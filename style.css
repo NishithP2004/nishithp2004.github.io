@@ -185,14 +185,20 @@ main {
     -moz-box-shadow: 10px 10px 102px 1px rgba(0, 0, 0, 0.75);
     box-shadow: 10px 10px 102px 1px rgba(0, 0, 0, 0.75);
     z-index: 10;
-    border: 10px solid gold;
     border-radius: 50%;
     transform: scale(1);
     transition: all 1s ease-in-out;
 }
 
-.profile-pic img:hover {
-    transform: scale(1.05);
+.ringCon {
+    position: relative;
+    top: -205px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 15;
+    margin-bottom: -180px;
 }
 
 .name {
@@ -625,112 +631,6 @@ header {
     text-decoration-style: wavy;
 }
 
-.mySlides {
-    display: none;
-}
-
-.mySlides img {
-    vertical-align: middle;
-    border: 1px solid black;
-    border-radius: 10px;
-    z-index: 50;
-    -webkit-box-shadow: 10px 10px 40px 0px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 10px 10px 40px 0px rgba(0, 0, 0, 0.75);
-    box-shadow: 10px 10px 40px 0px rgba(0, 0, 0, 0.75);
-    width: auto;
-    margin: auto;
-}
-
-.slideshow-container {
-    max-width: 1000px;
-    position: relative;
-    margin: auto;
-}
-
-/* Next & previous buttons */
-.prev,
-.next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    padding: 16px;
-    margin-top: -22px;
-    color: gold;
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-}
-
-/* Position the "next button" to the right */
-.next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-}
-
-/* On hover, add a black background color with a little bit see-through */
-.prev:hover,
-.next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-/* The dots/bullets/indicators */
-.dot {
-    cursor: pointer;
-    height: 15px;
-    width: 15px;
-    margin: 0 2px;
-    background-color: #999999;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.6s ease;
-}
-
-.active,
-.dot:hover {
-    background-color: #111111;
-}
-
-/* Fading animation */
-.fade {
-    -webkit-animation-name: fade;
-    -webkit-animation-duration: 5s;
-    animation-name: fade;
-    animation-duration: 5s;
-}
-
-@-webkit-keyframes fade {
-    from {
-        opacity: .4
-    }
-
-    to {
-        opacity: 1
-    }
-}
-
-@keyframes fade {
-    from {
-        opacity: .4
-    }
-
-    to {
-        opacity: 1
-    }
-}
-
-/* On smaller screens, decrease text size */
-@media only screen and (max-width: 300px) {
-
-    .prev,
-    .next,
-    .text {
-        font-size: 11px
-    }
-}
-
 #contact-form {
     display: block;
     margin: auto;
@@ -922,7 +822,7 @@ footer {
         min-width: 40vw;
     }
 
-    .slideshow-container {
+    .certificates {
         margin: auto 15px;
     }
 
@@ -947,7 +847,7 @@ footer {
         min-width: 20vw;
     }
 
-    .slideshow-container {
+    .certificates {
         margin: auto 15px;
     }
 
@@ -955,4 +855,17 @@ footer {
         width: max-content;
         gap: 10px;
     }
+}
+
+.certificates {
+    max-width: 1000px;
+    margin: auto;
+    border: 5px solid gold;
+    background-color: indigo;
+    border-radius: 10px;
+    z-index: 50;
+    -webkit-box-shadow: 10px 10px 40px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 40px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 40px 0px rgba(0, 0, 0, 0.75);
+    width: auto;
 }
