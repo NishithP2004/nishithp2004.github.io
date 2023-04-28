@@ -835,7 +835,7 @@ footer {
 
     #project-card {
         max-width: 84vw;
-        max-height: 86% !important;
+        max-height: 84% !important;
     }
 }
 
@@ -919,7 +919,7 @@ footer {
     gap: 20px;
     position: relative;
     box-sizing: border-box;
-    max-height: 92%;
+    max-height: 90%;
 }
 
 #project-card>img {
@@ -952,7 +952,8 @@ footer {
     display: block;
     background-color: rgba(0, 0, 0, 0.25);
     border-radius: 10px;
-    min-height: 24%;
+    min-height: 25%;
+    max-height: 25%;
     box-sizing: border-box;
     overflow-y: scroll;
 }
