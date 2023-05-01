@@ -72,7 +72,7 @@ header {
 }
 
 .nav-links {
-    padding: 12px;
+    margin: 12px;
     list-style: none;
     display: inline-flex;
     flex-direction: row;
@@ -101,8 +101,8 @@ header ul li {
     display: block;
     border: 1px solid var(--purple-violet);
     border-radius: 60px;
-    max-width: min-content;
-    padding: 10px;
+    max-width: fit-content;
+    padding: 10px 0;
     margin-left: 10px;
     background-color: white;
     box-sizing: border-box;
@@ -110,20 +110,21 @@ header ul li {
     -moz-box-shadow: 10px 10px 68px 0px rgba(0, 0, 0, 0.75);
     box-shadow: 10px 10px 68px 0px rgba(0, 0, 0, 0.75);
     z-index: 110;
-    transition: all 0.35s ease-in;
+    transition: all 0.35s ease-in-out;
 }
 
 header ul a {
     text-decoration: none;
     border: 0px solid var(--purple-violet);
     border-radius: 60px;
-    padding: 10px;
     color: black;
+    box-sizing: border-box;
+    padding: 10px 15px;
 }
 
 header ul a:hover {
     text-decoration: none;
-    color: white;
+    color: #fff;
 }
 
 header ul li:hover {
