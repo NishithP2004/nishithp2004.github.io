@@ -1085,3 +1085,15 @@ footer {
         ;
     }
 }
+
+.animation-fade {
+    opacity: 0;
+    transition: all 0.2s ease-out;
+    transform: translateY(-10px);
+    transition-delay: .4s;
+}
+
+.scroll-animation-fade {
+    opacity: 1;
+    transform: translateY(0);
+}

@@ -86,13 +86,16 @@ function appendData(data) {
         entries.forEach(entry => {
             if (entry.isIntersecting && entry.target.classList.contains("animation"))
                 entry.target.classList.add("scroll-animation")
+            else if (entry.isIntersecting && entry.target.classList.contains("animation-fade"))
+            entry.target.classList.add("scroll-animation-fade")
             /* else
                 entry.target.classList.remove("scroll-animation") */
-
-
         })
     });
     document.body.querySelectorAll(`.animation`).forEach(element => {
+        observer.observe(element)
+    })
+    document.body.querySelectorAll(`.animation-fade`).forEach(element => {
         observer.observe(element)
     })
 }
