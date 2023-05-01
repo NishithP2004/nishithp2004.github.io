@@ -46,80 +46,7 @@
             <button class="dropbtn" aria-label="Nav Links Dropdown" hidden>
                 <i class="fa fa-caret-down" id="arrow"></i>
             </button>
-            <script>
-                document.getElementById("arrow").addEventListener("click", () => {
-                    let activeStyle =
-                        `
-        @media all and (min-width: 320px) and (max-width: 426px) {
-            .nav-links {
-                display: block;
-                flex-direction: column;
-            }
-        
-            .dropbtn {
-                display: block;
-                font-size: 16px;
-                border: none;
-                outline: none;
-                color: white;
-                padding: 14px 16px;
-                background-color: inherit;
-                font-family: inherit;
-                margin: 0;
-            }
-
-            #arrow {
-                padding-left: 20px;
-            }
-        
-            header {
-                display: block; 
-            }
-        
-            .title {
-                border-right: none;
-                border-bottom: 1px solid white;
-            }
-        }
-        `
-
-                    let inactiveStyle = `
-        @media all and (min-width: 320px) and (max-width: 426px) {
-            .nav-links {
-                display: none;
-                flex-direction: row;
-            }
-
-            header {
-                display: flex;
-            }
-
-            title {
-                border-bottom: none;
-                border-right: 1px solid white;
-            }
-
-            #arrow {
-                padding-left: 0px;
-            }
-        }
-
-            `
-                    let element = document.getElementById("arrow").classList;
-                    var stylesheet = document.getElementById('js-inject');
-
-                    if (element.contains("fa-caret-down")) {
-                        stylesheet.innerText = activeStyle;
-                        element.replace("fa-caret-down", "fa-caret-up")
-                    } else if (element.contains("fa-caret-up")) {
-                        stylesheet.innerText = inactiveStyle;
-                        element.replace("fa-caret-up", "fa-caret-down")
-                    }
-
-                    document.head.appendChild(stylesheet);
-
-                })
-            </script>
+            <script type="text/javascript" src="js/nav.js"></script>
         </nav>
     </header>
     <main>
@@ -164,106 +91,7 @@
             </ul>
 
         </div>
-        <script>
-            var host = window.location.host;
-            // var host = "nishithp.tech"
-            let template =
-                `
-                <li>
-                    <div class="{{Direction}} animation">
-                        <div class="flag-wrapper">
-                            <span class="flag">{{Flag}}</span>
-                            <span class="time-wrapper"><span class="time">{{Time}}</span></span>
-                        </div>
-                        <div class="desc">{{Description}}</div>
-                    </div>
-                </li>
-            `
-
-            let code = `
-            <div class="swiper-slide">
-                <img src="{{image_src}}" style="width:100%" alt="{{image_alt}}">
-            </div>
-            `
-
-            let projectsCard =
-                `
-                    <div class="swiper-slide" id="project-card">
-                        <img src="{{project_image}}"
-                            alt="{{project_image_alt}}">
-
-                        <p class="project-title">{{project_title}}</p>
-                        <p class="project-description">{{project_desc}}</p>
-                        <div class="project-links">
-                            <a href="{{project_links_1}}" target="_blank" aria-label="View Source Code"><i class="fa-solid fa-code"></i></a>
-                            <a href="{{project_links_2}}" target="_blank" aria-label="View Live Project"><i class="fa-solid fa-hat-wizard"></i></a>
-                        </div>
-                    </div>
-            `
-
-            $.getJSON(`https://assets.${host}/website/data.json`, function (json) {
-                appendData(json)
-            });
-
-            function appendData(data) {
-                let timeline = document.getElementById("timeline");
-                let slideshow = document.getElementById("slideshow");
-                let projects = document.getElementById("projects-card-wrapper")
-
-
-                data["Roadmap"].reverse().forEach(entry => {
-                    let temp = template;
-                    let placeholders = {
-                        "{{Direction}}": entry.direction,
-                        "{{Flag}}": entry.flag,
-                        "{{Time}}": entry.time,
-                        "{{Description}}": entry.description
-                    }
-
-                    for (let placeholder of Object.keys(placeholders))
-                        temp = temp.replace(placeholder, placeholders[placeholder])
-
-                    timeline.innerHTML += temp;
-
-                })
-
-                data["Certificates_New"].forEach(entry => {
-                    let temp = code.replace("{{image_src}}", entry.src)
-                    temp = temp.replace("{{image_alt}}", entry.alt)
-                    slideshow.innerHTML += temp;
-                })
-
-                data["Projects"].forEach(entry => {
-                    let temp = projectsCard;
-                    let placeholders = {
-                        "{{project_image}}": entry.image,
-                        "{{project_image_alt}}": entry.title,
-                        "{{project_title}}": entry.title,
-                        "{{project_desc}}": entry.desc,
-                        "{{project_links_1}}": entry.links[0],
-                        "{{project_links_2}}": entry.links[1]
-                    }
-
-                    for (let placeholder of Object.keys(placeholders))
-                        temp = temp.replace(placeholder, placeholders[placeholder])
-
-                    projects.innerHTML += temp;
-                })
-                let observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting && entry.target.classList.contains("animation"))
-                            entry.target.classList.add("scroll-animation")
-                        /* else
-                            entry.target.classList.remove("scroll-animation") */
-
-
-                    })
-                });
-                document.body.querySelectorAll(`.animation`).forEach(element => {
-                    observer.observe(element)
-                })
-            }
-        </script>
+        <script type="text/javascript" src="js/data.js"></script>
         <br>
         <div id="certificates">
             <h2 class="subheadings">Certificates</h2>
@@ -333,7 +161,8 @@
         </script>
 
         <div id="skills">
-            <h2 class="subheadings" style="transform: rotate(-90deg); text-decoration: none; float: left; color: #fff;">Skills</h2>
+            <h2 class="subheadings" style="transform: rotate(-90deg); text-decoration: none; float: left; color: #fff;">
+                Skills</h2>
             <div class="skills-container">
                 <span><i class="fa-brands fa-html5"></i></span>
                 <span><i class="fa-brands fa-css3-alt"></i></span>
@@ -383,52 +212,7 @@
 
             </div>
 
-            <script>
-                $("#contact-us").submit(function (e) {
-                    e.preventDefault();
-                    let form = document.getElementById("contact-us");
-                    let formData = new FormData(form);
-                    let payload = {};
-
-                    for (let key of formData.keys())
-                        payload[key] = formData.get(key);
-
-                    /* fetch(form.action, {
-                            mode: 'no-cors',
-                            method: form.method,
-                            body: JSON.stringify(payload)
-                        })
-                        .then(() => {
-                            let msg = document.getElementById("message");
-                            msg.hidden = false;
-
-                            setTimeout(() => {
-                                msg.hidden = true;
-                            }, 5000)
-                        }) */
-
-                    $.ajax({
-                        url: `https://emailer.${host}/website/contact`,
-                        method: form.method,
-                        data: payload,
-                        success: function (data) {
-                            form.reset();
-                            $('#form-response').html(
-                                `<em>Thank you! I will get in touch with you shortly :) </em>`);
-                            setTimeout(() => {
-                                $('#form-response').html(``);
-                            }, 10 * 1000)
-                        },
-                        error: function () {
-                            $('#form-response').html(`<em>There was an error</em>`);
-                            setTimeout(() => {
-                                $('#form-response').html(``);
-                            }, 10 * 1000)
-                        }
-                    });
-                    return false;
-                });
-            </script>
+            <script type="text/javascript" src="js/contact.js"></script>
         </div>
 
         <br>
