@@ -1,5 +1,5 @@
-var host = window.location.host;
-// var host = "nishithp.tech"
+// var host = window.location.host;
+var host = "nishithp.tech"
 let template =
     `
                 <li>
