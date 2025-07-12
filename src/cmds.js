@@ -69,9 +69,9 @@ const education = `### 🎓 Education
 
 *   **🏫 Amrita Vishwa Vidyapeetham, Bangalore** (10/2022 - Present)
     *   B.Tech, Computer Science Engineering
-*   **🏫 Bishop Cotton Boy's School, Bangalore** (08/2020 - 07/2022)
+*   **🏫 Bishop Cotton Boys School, Bangalore** (08/2020 - 07/2022)
     *   ISC (Grade 12), Computer Science - **98%**
-*   **🏫 Bishop Cotton Boy's School, Bangalore** (2009 - 2020)
+*   **🏫 Bishop Cotton Boys School, Bangalore** (2009 - 2020)
     *   ICSE (Grade 10), Science - **96.6%**`
 
 const achievements = `### 🏆 Awards & Achievements
