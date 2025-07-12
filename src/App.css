@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+body {
+  font-family: monospace;
+  background-color: black;
+}
+
+.amrita-town {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+@media all and (max-width: 640px) {
+  .amrita-town {
+    display: none;
+  }
+}
+
+.available-cmds li {
+  list-style-type: none;
+}
+
+.available-cmds li:not(:last-child)::after {
+  content: "|";
+  color: green;
+  font-weight: 900;
+  padding: 0 4px;
+}
