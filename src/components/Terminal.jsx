@@ -40,19 +40,24 @@ function Terminal() {
                 <div className="conversation-input flex flex-row justify-start items-center gap-2 px-2">
                     <span className="text-blue-400">nishith@portfolio:~$</span>
                     <input type="text" ref={inputRef} className="conversation-input text-green-400 w-full outline-none" name="cmd-input" spellCheck={false} value={input} onInput={e => setInput(e.target.value)} autoFocus onKeyDown={(ev) => {
-
-                        if (ev.key == "Enter") {
-                            if (input == "clear") {
-                                setHistory([history[0]])
-                            } else {
-                                setIsTyping(true)
-                                setHistory([
-                                    ...history,
-                                    {
-                                        command: input,
-                                        message: generateResponse(input)
-                                    }
-                                ])
+                        if (ev.key === "Enter") {
+                            const cmd = input.trim()
+                            switch(cmd) {
+                                case "":
+                                    break;
+                                case "clear": 
+                                    setHistory([history[0]])
+                                    break;
+                                default:
+                                    setIsTyping(true)
+                                    setHistory([
+                                        ...history,
+                                        {
+                                            command: input,
+                                            message: generateResponse(cmd)
+                                        }
+                                    ])
+                                    break;
                             }
                             setInput("")
                         }
