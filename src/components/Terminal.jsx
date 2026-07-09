@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect } from "react"
+import { useCallback, useState, useRef, useEffect } from "react"
 import MarkdownRenderer from "./MarkdownRenderer"
 import { generateResponse } from "../utils.js"
 
-const welcomeMsg = "Hi, I am Nishith P. 👋\n\nWelcome to my interactive **AI Powered** 🤖 portfolio website! 💻✨\nType 'help' to see the available commands. 🚀"
+const welcomeMsg = "Hi, I am Nishith P.\n\nWelcome to my interactive AI-powered portfolio. Type `help` to see the available commands, or try `projects`, `browser`, `skills`, and `contact`."
 
-function Terminal() {
+function Terminal({ onCommand, commandRequest, compact = false }) {
     const [history, setHistory] = useState([{
         command: "welcome",
         message: welcomeMsg
@@ -14,6 +14,39 @@ function Terminal() {
 
     const terminalRef = useRef(null)
     const inputRef = useRef(null)
+    const processedCommandRequestId = useRef(null)
+
+    const executeCommand = useCallback((rawCommand) => {
+        const cmd = rawCommand.trim()
+        switch (cmd) {
+            case "":
+                break;
+            case "clear":
+                setHistory((currentHistory) => [currentHistory[0]])
+                setIsTyping(false)
+                onCommand?.("clear")
+                break;
+            default:
+                setIsTyping(true)
+                onCommand?.(cmd)
+                setHistory((currentHistory) => [
+                    ...currentHistory,
+                    {
+                        command: cmd,
+                        message: generateResponse(cmd)
+                    }
+                ])
+                break;
+        }
+        setInput("")
+    }, [onCommand])
+
+    useEffect(() => {
+        if (!commandRequest?.command) return
+        if (processedCommandRequestId.current === commandRequest.id) return
+        processedCommandRequestId.current = commandRequest.id
+        executeCommand(commandRequest.command)
+    }, [commandRequest, executeCommand])
 
     useEffect(() => {
         const handleWindowClick = () => {
@@ -25,41 +58,23 @@ function Terminal() {
     }, [isTyping])
 
     return (
-        <div id="terminal" className="overflow-auto" ref={terminalRef}>
+        <div id="terminal" className={`overflow-auto ${compact ? "terminal-compact" : ""}`} ref={terminalRef}>
             <div className="conversation-history p-2 flex flex-col">
                 {history.map((data, i) => {
                     return (
                         <div className="text-md mb-2" key={i}>
-                            <p><span className="text-blue-400 mr-2">nishith@portfolio:~$</span><span className="text-green-400">{data.command}</span></p>
-                            <div className="mt-1 text-white whitespace-pre-wrap text-md"><MarkdownRenderer content={data.message} isTyping={isTyping} setIsTyping={setIsTyping} scrollRef={terminalRef} /></div>
+                            <p><span className="terminal-prompt text-blue-400 mr-2">⚡ nishith@portfolio:~$</span><span className="text-green-400">{data.command}</span></p>
+                            <div className="mt-1 text-white whitespace-pre-wrap text-md"><MarkdownRenderer content={data.message} setIsTyping={setIsTyping} scrollRef={terminalRef} /></div>
                         </div>
                     )
                 })}
             </div>
             {!isTyping ? (
                 <div className="conversation-input flex flex-row justify-start items-center gap-2 px-2">
-                    <span className="text-blue-400">nishith@portfolio:~$</span>
+                    <span className="terminal-prompt text-blue-400">⚡ nishith@portfolio:~$</span>
                     <input type="text" ref={inputRef} className="conversation-input text-green-400 w-full outline-none" name="cmd-input" spellCheck={false} value={input} onInput={e => setInput(e.target.value)} autoFocus onKeyDown={(ev) => {
                         if (ev.key === "Enter") {
-                            const cmd = input.trim()
-                            switch(cmd) {
-                                case "":
-                                    break;
-                                case "clear": 
-                                    setHistory([history[0]])
-                                    break;
-                                default:
-                                    setIsTyping(true)
-                                    setHistory([
-                                        ...history,
-                                        {
-                                            command: input,
-                                            message: generateResponse(cmd)
-                                        }
-                                    ])
-                                    break;
-                            }
-                            setInput("")
+                            executeCommand(input)
                         }
                     }} />
                 </div>

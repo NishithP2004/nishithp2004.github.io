@@ -1,107 +1,110 @@
-const help = `### ❓ Available Commands
+import { commands, profile, sectionByCommand } from "./portfolioData"
 
-Here are the commands you can use:
-
-*   **about**: 👨‍💻 Who is Nishith?
-*   **projects**: 🚀 View my key projects.
-*   **skills**: 🛠️ List of my technical skills.
-*   **volunteering**: 🤝 My leadership and community roles.
-*   **roadmap**: 🗺️ My goals and future plans.
-*   **education**: 🎓 My educational background.
-*   **achievements**: 🏆 List of my awards and accomplishments.
-*   **contact**: 📬 How to get in touch with me.
-*   **sudo**: 🔒 Request admin privileges.
-*   **clear**: ✨ Clear the terminal screen.`
-
-const about = `### 👋 About Me
-
-I am a passionate Student of Technology with expertise in **Full Stack Development**, **Generative AI**, and **Cloud Computing**. I am committed to driving impactful projects, continuous learning, and pursuing opportunities with pioneering organizations that value collaboration and mutual growth. 🚀`
-
-const projects = `### 🚀 My Projects
-
-🤖 **Detecting AI-Generated Text: A Realtime Scalable Distributed Computing Approach (2024)**
-*   Engineered a scalable, Kubernetes-based system for real-time AI-generated text detection, orchestrating data pipelines with Kafka.
-*   Implemented ML pipelines, fine-tuning LLMs using LoRA for robust deployment.
-
-🎤 **NeoPentesting: A Voice-Activated Framework for Automated Penetration Testing (2024)**
-*   Spearheaded the development of an AI-powered, voice-activated Burp Suite extension for automated penetration testing.
-*   Implemented a hierarchical multi-agent framework and integrated voice recognition via Raspberry Pi 5 for hands-free operation.
-
-🔍 **Nexus Search: Unveiling the Power of Semantic Search (2024)**
-*   Architected and developed a semantic search engine using knowledge graphs, vector indexing, and LLMs.
-*   Engineered a scalable web crawler and integrated Google Gemini for enhanced search results.
-
-🎓 **Project X: The power of knowledge in the palm of your hands (2023)**
-*   Created an educational platform with a React JS and Java front-end, managed by microservices in Azure Functions.
-*   Leveraged Google's PaLM API and Gemini Pro LLMs and implemented efficient data storage using Azure Cosmos DB.
-
-🚌 **GPS Tracker for College Bus (2023)**
-*   Designed and implemented a real-time bus tracking system with secure authentication, leveraging the Google Maps API.
-*   Integrated real-time updates via SocketIO and WhatsApp notifications for enhanced student convenience.`
-
-const skills = `### 🛠️ Technical Skills
-
-*   **💻 Frontend**: HTML, CSS, JavaScript, React JS
-*   **⚙️ Backend**: Node JS
-*   **⌨️ Programming Languages (Basics)**: C/C++, Java
-*   **🗃️ DBMS**: Firebase, Azure Cosmos DB (Vector Database), Neo4j (Graph Database), Redis
-*   **☁️ Cloud Computing**: Google Cloud Platform, Microsoft Azure
-*   **🔧 Tools**: LangChain, Docker, Kubernetes`
-
-const volunteering = `### 🤝 Volunteering & Leadership
-
-*   **👨‍💻 β - Microsoft Student Ambassador** (2024-present)
-    *   Serving as a campus leader to foster a strong technical community and share knowledge about Microsoft technologies.
-*   **🧑‍💼 Vice President, CodeChef ASEB** (09/2023 - 09/2024)
-    *   Led the university's CodeChef chapter, organizing coding competitions, workshops, and mentorship sessions to promote competitive programming.
-`
-
-const roadmap = `### 🗺️ My Roadmap
-
-My primary focus is on deepening my expertise in **Generative AI**, **Full Stack Development**, and **Cloud Computing**. I am actively seeking opportunities to:
-*   🎯 Contribute to impactful, large-scale projects at pioneering organizations.
-*   🌱 Engage in continuous learning to stay at the forefront of technology.
-*   🤝 Collaborate with teams that foster mutual growth and innovation.
-
-My ultimate goal is to leverage technology to build robust and scalable solutions that solve real-world problems. ✨`
-
-const education = `### 🎓 Education
-
-*   **🏫 Amrita Vishwa Vidyapeetham, Bangalore** (10/2022 - Present)
-    *   B.Tech, Computer Science Engineering
-*   **🏫 Bishop Cotton Boys School, Bangalore** (08/2020 - 07/2022)
-    *   ISC (Grade 12), Computer Science - **98%**
-*   **🏫 Bishop Cotton Boys School, Bangalore** (2009 - 2020)
-    *   ICSE (Grade 10), Science - **96.6%**`
-
-const achievements = `### 🏆 Awards & Achievements
-
-*   🎨 **Adobe Fund for Design** (2024) - Awarded a grant of **$1,500**.
-*   🛡️ **Microsoft M365 Security Bounty** (09/2024) - Earned a **$6,000** bounty.
-*   💻 **Honorable Mention - Microsoft Developers AI Learning Hackathon** (07/2024) - Awarded a Cash Prize of **$400**.
-*   🇮🇳 **SSF 2021 Awardee** (2022) - Recognized by the Office of the Principal Scientific Adviser to the GOI.
-*   🥇 **OCA-Rev Scipio Merit Award** (2022) - ISC Topper in Science.
-*   🥇 **Google Code To Learn 2019 Winner** - Recognized by Google India.
-*   ⭐ **Google Code-in 2019 Finalist** - Finalist in the global Google Open Source program.`
-
-const contact = `### 📬 Contact Information
-
-*   **📧 Email**: [nishithp11@gmail.com](mailto:nishithp11@gmail.com)
-*   **🌐 Website**: [nishithp.page](https://nishithp.page)
-*   **💼 LinkedIn**: [linkedin.com/in/nishith-p](https://www.linkedin.com/in/nishith-p)
-*   **🐙 GitHub**: [github.com/NishithP2004](https://github.com/NishithP2004)`
-
-const sudo = `🚫 User guest is not in the sudoers file. This incident will be reported. 🚨`
-
-export default {
-    help,
-    about,
-    projects,
-    skills,
-    volunteering,
-    roadmap,
-    education,
-    achievements,
-    contact,
-    sudo
+const sectionEmoji = {
+  about: "👤",
+  experience: "💼",
+  projects: "🚀",
+  "browser-lab": "🌐",
+  skills: "🛠️",
+  achievements: "🏆",
+  education: "🎓",
+  contact: "📬",
 }
+
+const itemEmoji = {
+  about: "⚡",
+  experience: "▸",
+  projects: "▸",
+  "browser-lab": "☁️",
+  skills: "◆",
+  achievements: "🏅",
+  education: "🎓",
+  contact: "↗",
+}
+
+const commandDescriptions = {
+  about: "👤 who Nishith is and what he builds",
+  experience: "💼 current software engineering and security research work",
+  projects: "🚀 key AI, cloud, search, security, and realtime projects",
+  browser: "🌐 open the virtual cloud browser lab",
+  skills: "🛠️ technical stack and tools",
+  achievements: "🏆 awards, bounties, and recognitions",
+  education: "🎓 academic background",
+  contact: "📬 social, research, and contact links",
+  repo: "🐙 GitHub profile and highlighted repositories",
+  sudo: "🔒 request admin privileges",
+  clear: "✨ clear the terminal screen",
+}
+
+const renderList = (items = [], emoji = "•") => items.map((item) => `* ${emoji} ${item}`).join("\n")
+
+const renderSection = (section) => {
+  if (!section) return ""
+
+  const emoji = sectionEmoji[section.id] || "▸"
+  const lines = [`### ${emoji} ${section.title}`, "", section.body, ""]
+
+  if (section.items && section.id === "projects") {
+    section.items.forEach((project) => {
+      lines.push(
+        `**🚀 ${project.name} (${project.year})**`,
+        `* ${project.description}`,
+        `* 🧰 Stack: ${project.tags.join(", ")}`,
+        project.liveUrl ? `* 🔗 Live: [Open project](${project.liveUrl})` : "* 🔒 Live: Not published yet",
+        `* 🐙 ${project.sourceLabel}: [GitHub](${project.sourceUrl})`,
+        ""
+      )
+    })
+  } else if (section.experiences) {
+    section.experiences.forEach((experience) => {
+      const company = experience.url ? `[${experience.company}](${experience.url})` : experience.company
+      lines.push(
+        `**💼 ${experience.role}**`,
+        `* 🏢 ${company} · ${experience.type}`,
+        `* 🗓️ ${experience.dates}`,
+        `* 📍 ${experience.location}`,
+        renderList(experience.bullets, "▸"),
+        ""
+      )
+    })
+  } else if (section.groups) {
+    section.groups.forEach(([label, , ...items]) => {
+      lines.push(`* 🛠️ **${label}**: ${items.join(", ")}`)
+    })
+  } else if (section.links) {
+    section.links.forEach(([label, href]) => {
+      lines.push(`* ↗ **${label}**: [Open](${href})`)
+    })
+  } else {
+    lines.push(renderList(section.highlights || section.items, itemEmoji[section.id]))
+  }
+
+  return lines.join("\n").trim()
+}
+
+const help = `### 🧭 Available Commands
+
+${commands.map((cmd) => `* **${cmd}**: ${commandDescriptions[cmd]}`).join("\n")}
+
+💡 Tip: switch to hybrid mode and run a command like \`projects\`, \`skills\`, or \`contact\`. The GUI pane will scroll to the matching portfolio section while the terminal prints the response.`
+
+const sudo = `🔒 User guest is not in the sudoers file. This incident will be logged to /var/portfolio/audit.log.`
+
+const cmds = {
+  help,
+  sudo,
+  ...Object.fromEntries(Object.entries(sectionByCommand).map(([command, section]) => [command, renderSection(section)])),
+}
+
+cmds.whoami = renderSection(sectionByCommand.about)
+cmds.links = renderSection(sectionByCommand.contact)
+cmds.repo = `### 🐙 Repository Links
+
+* 🐙 GitHub: [Open profile](${profile.github})
+* 📍 Location: ${profile.location}
+* 🎓 Scholar: [Open profile](${profile.scholar})
+* 🧬 ORCID: [Open profile](${profile.orcid})
+* 📌 Pinned: [spectra](https://github.com/NishithP2004/spectra), [BaseScript](https://github.com/NishithP2004/BaseScript), [VishNet](https://github.com/NishithP2004/VishNet)
+* 🧾 Portfolio source: [nishithp2004.github.io](https://github.com/NishithP2004/nishithp2004.github.io)`
+
+export default cmds

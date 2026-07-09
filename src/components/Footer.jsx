@@ -1,27 +1,29 @@
 import { useState, useEffect } from "react";
+import FaIcon from "./FaIcon";
 
 function Footer() {
     const [date, setDate] = useState(new Date())
 
     useEffect(() => {
-        setInterval(() => {
+        const interval = setInterval(() => {
             setDate(new Date())
         }, 1000)
+        return () => clearInterval(interval)
     }, [])
 
     return (
-        <footer className="fixed bottom-0 left-0 right-0 p-2 text-green-500 bg-black border-t-1 border-green-500 text-xs flex flex-row justify-between items-center">
-            <p>nishith@portfolio:~$</p>
+        <footer className="site-footer">
+            <p className="footer-prompt"><FaIcon name="terminal" /> nishith@portfolio:~$</p>
             <ul className="amrita-town">
-                <li><a href="https://amrita.town">amrita.town |</a></li>
-                <li><a href="https://amrita.town/prev">← prev</a></li>
-                <li><a href="https://amrita.town/random">⚄ random</a></li>
-                <li><a href="https://amrita.town/next">next →</a></li>
+                <li><a href="https://amrita.town">amrita.town</a></li>
+                <li><a href="https://amrita.town/prev" aria-label="Previous amrita.town site" title="Previous"><FaIcon name="arrowLeft" /><span>prev</span></a></li>
+                <li><a href="https://amrita.town/random" aria-label="Random amrita.town site" title="Random"><FaIcon name="dice" /><span>random</span></a></li>
+                <li><a href="https://amrita.town/next" aria-label="Next amrita.town site" title="Next"><span>next</span><FaIcon name="arrowRight" /></a></li>
             </ul>
-            <ul className="sm:hidden flex flex-row justify-center items-center gap-2">
-                <li><a href="https://amrita.town/prev">←</a></li>
-                <li><a href="https://amrita.town/random">⚄</a></li>
-                <li><a href="https://amrita.town/next">→</a></li>
+            <ul className="footer-compact-links">
+                <li><a href="https://amrita.town/prev" aria-label="Previous amrita.town site" title="Previous"><FaIcon name="arrowLeft" /></a></li>
+                <li><a href="https://amrita.town/random" aria-label="Random amrita.town site" title="Random"><FaIcon name="dice" /></a></li>
+                <li><a href="https://amrita.town/next" aria-label="Next amrita.town site" title="Next"><FaIcon name="arrowRight" /></a></li>
             </ul>
             <p>{date.toLocaleDateString({
                 region: "IN"

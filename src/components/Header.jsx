@@ -1,10 +1,47 @@
+import { useState } from "react"
+import FaIcon from "./FaIcon"
+import { sections } from "../portfolioData"
+
+const navItems = [
+    ["Home", "#hero", "terminal"],
+    ...sections
+        .filter((section) => ["about", "experience", "projects", "skills", "contact"].includes(section.id))
+        .map((section) => [section.title, `#${section.id}`, section.icon]),
+]
+
 function Header() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+
     return (
-        <header className="flex flex-row p-4 bg-black border-b-1 border-green-500 md:justify-start items-center text-center justify-center md:text-left fixed top-0 right-0 left-0 w-full">
-            <div>
+        <header className="site-header">
+            <div className="brand">
                 <h3 className="text-green-500 font-bold text-2xl">Nishith P</h3>
-                <h4 className="text-sm text-gray-400">Student | Dev | Tech Enthusiast</h4>
+                <h4 className="text-sm text-gray-400">AI | Cloud | Security | Full Stack Dev</h4>
             </div>
+            <button
+                type="button"
+                className={`mobile-menu-button ${isMenuOpen ? "active" : ""}`}
+                aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={isMenuOpen}
+                aria-controls="portfolio-navigation"
+                onClick={() => setIsMenuOpen((open) => !open)}
+            >
+                <span />
+                <span />
+                <span />
+            </button>
+            <nav
+                className={`header-links ${isMenuOpen ? "open" : ""}`}
+                id="portfolio-navigation"
+                aria-label="Portfolio navigation"
+            >
+                {navItems.map(([label, href, icon]) => (
+                    <a href={href} key={label} onClick={() => setIsMenuOpen(false)}>
+                        <FaIcon name={icon} />
+                        <span>{label}</span>
+                    </a>
+                ))}
+            </nav>
         </header>
     )
 }

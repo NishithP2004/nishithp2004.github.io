@@ -13,7 +13,7 @@ async function sleep(delay) {
     })
 }
 
-function MarkdownRenderer({ content, setIsTyping, isTyping, scrollRef }) {
+function MarkdownRenderer({ content, setIsTyping, scrollRef }) {
     const [chunks, setChunks] = useState("")
 
     useEffect(() => {
@@ -31,7 +31,7 @@ function MarkdownRenderer({ content, setIsTyping, isTyping, scrollRef }) {
                     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
                 }
             }
-            if(!isCancelled && isTyping) setIsTyping(false)
+            if(!isCancelled) setIsTyping(false)
         }
 
         setChunks("")
@@ -42,7 +42,7 @@ function MarkdownRenderer({ content, setIsTyping, isTyping, scrollRef }) {
         return () => {
             isCancelled = true;
         }
-    }, [])
+    }, [content, scrollRef, setIsTyping])
 
     return (
         <Markdown remarkPlugins={[[remarkGfm, rehypeStarryNight, remark]]}>

@@ -1,0 +1,317 @@
+import { forwardRef, useEffect, useState } from "react"
+import FaIcon from "./FaIcon"
+import ProfileCard from "./ProfileCard"
+import { profile, sections } from "../portfolioData"
+
+const heroWords = ["AI", "Code", "Curiosity"]
+const longestHeroWordLength = Math.max(...heroWords.map((word) => word.length))
+
+const skillIconMap = {
+  HTML: "html5",
+  CSS: "css3",
+  JavaScript: "js",
+  React: "react",
+  "Tailwind CSS": "code",
+  "Node.js": "nodeJs",
+  Express: "server",
+  Java: "java",
+  Python: "python",
+  "Azure Functions": "microsoft",
+  "Socket.IO": "server",
+  Playwright: "desktop",
+  Puppeteer: "desktop",
+  Selenium: "desktop",
+  noVNC: "desktop",
+  "Chrome automation": "desktop",
+  MCP: "robot",
+  Firebase: "database",
+  "Azure Cosmos DB": "microsoft",
+  Neo4j: "database",
+  Redis: "database",
+  MongoDB: "database",
+  SQLite: "database",
+  "Vector DBs": "database",
+  "Microsoft Azure": "microsoft",
+  "Google Cloud": "google",
+  AWS: "aws",
+  Cloudflare: "cloudflare",
+  "LangChain / LangGraph": "robot",
+  Langfuse: "robot",
+  Docker: "docker",
+  Kubernetes: "dharmachakra",
+  "Google ADK": "google",
+  "Burp Suite": "shield",
+  "Kali Linux tooling": "shield",
+  Nmap: "shield",
+  SQLMap: "database",
+  CyberChef: "code",
+}
+
+function HeroTypingText() {
+  const [wordIndex, setWordIndex] = useState(0)
+  const [characterCount, setCharacterCount] = useState(1)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const currentWord = heroWords[wordIndex]
+  const visibleWord = currentWord.slice(0, characterCount)
+
+  useEffect(() => {
+    const isComplete = characterCount === currentWord.length
+    const isEmpty = characterCount === 0
+    const delay = isComplete && !isDeleting ? 1150 : isDeleting ? 58 : 115
+
+    const timeout = window.setTimeout(() => {
+      if (!isDeleting && isComplete) {
+        setIsDeleting(true)
+        return
+      }
+
+      if (isDeleting && isEmpty) {
+        setIsDeleting(false)
+        setWordIndex((index) => (index + 1) % heroWords.length)
+        setCharacterCount(1)
+        return
+      }
+
+      setCharacterCount((count) => count + (isDeleting ? -1 : 1))
+    }, delay)
+
+    return () => window.clearTimeout(timeout)
+  }, [characterCount, currentWord, isDeleting])
+
+  return (
+    <p className="typing-line" aria-label={`Hacking the Future with ${currentWord}`}>
+      <span>Hacking the Future with </span>
+      <span className="typing-word-slot" style={{ "--typing-width": `${longestHeroWordLength}ch` }}>
+        <span className="typing-word">{visibleWord || "\u00a0"}</span>
+      </span>
+    </p>
+  )
+}
+
+function BrowserLab() {
+  return (
+    <div className="browser-lab" aria-label="Virtual cloud browser concept window">
+      <div className="browser-topbar">
+        <div className="traffic">
+          <span />
+          <span />
+          <span />
+        </div>
+        <div className="address">cloud://nishith-lab/session/semantic-browser</div>
+        <div className="latency">42ms</div>
+      </div>
+      <div className="browser-tabs">
+        <span className="active">Remote Workspace</span>
+        <span>AI Memory</span>
+        <span>Trace Log</span>
+      </div>
+      <div className="browser-body">
+        <div className="browser-preview">
+          <div className="mini-toolbar">
+            <span>isolated chromium</span>
+            <strong>live</strong>
+          </div>
+          <div className="preview-grid">
+            <div className="cloud-node primary">GPU Render</div>
+            <div className="cloud-node">Crawler</div>
+            <div className="cloud-node">Session VM</div>
+            <div className="cloud-node">Policy Gate</div>
+          </div>
+          <div className="stream-line" />
+          <div className="stream-line short" />
+        </div>
+        <div className="browser-side">
+          <p className="side-label"><FaIcon name="cloudflare" /> edge browser runtime</p>
+          <h3>Ask the browser what it saw.</h3>
+          <ul>
+            <li>Snapshot DOM and screenshots</li>
+            <li>Replay tasks across sessions</li>
+            <li>Extract links, markdown, and structured page memory</li>
+          </ul>
+          <code>$ browser render --cloudflare --playwright</code>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SectionContent({ section }) {
+  if (section.id === "browser-lab") return <BrowserLab />
+
+  if (section.id === "projects") {
+    return (
+      <div className="project-grid">
+        {section.items.map((project) => (
+          <article className="project-card" key={project.name}>
+            <div>
+              <p>{project.year}</p>
+              <h3>{project.name}</h3>
+              <span className="project-tags">{project.tags.join(" / ")}</span>
+            </div>
+            <p>{project.description}</p>
+            <div className="project-actions">
+              {project.liveUrl ? (
+                <a href={project.liveUrl} target="_blank" rel="noreferrer">
+                  <FaIcon name="globe" />
+                  <span>Open project</span>
+                </a>
+              ) : (
+                <button type="button" disabled aria-label={`${project.name} does not have a live deployment link yet`}>
+                  <FaIcon name="globe" />
+                  <span>No live deployment</span>
+                </button>
+              )}
+              <a href={project.sourceUrl} target="_blank" rel="noreferrer">
+                <FaIcon name="github" />
+                <span>{project.sourceLabel}</span>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    )
+  }
+
+  if (section.experiences) {
+    return (
+      <div className="experience-list">
+        {section.experiences.map((experience) => (
+          <article className="experience-card" key={`${experience.company}-${experience.role}`}>
+            <div className="experience-topline">
+              <FaIcon name="briefcase" />
+              <div>
+                <h3>{experience.role}</h3>
+                <p>
+                  {experience.url ? (
+                    <a className="experience-company-link" href={experience.url} target="_blank" rel="noreferrer">
+                      {experience.company}
+                    </a>
+                  ) : experience.company}
+                  {" · "}
+                  {experience.type}
+                </p>
+              </div>
+            </div>
+            <p className="experience-meta">{experience.dates} · {experience.location}</p>
+            <ul>
+              {experience.bullets.map((bullet) => (
+                <li key={bullet}>{bullet}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    )
+  }
+
+  if (section.groups) {
+    return (
+      <div className="skill-grid">
+        {section.groups.map(([label, icon, ...items]) => (
+          <article key={label} className="skill-group">
+            <h3><FaIcon name={icon} />{label}</h3>
+            <div className="skill-token-list">
+              {items.map((item) => (
+                <span className="skill-token" key={item}>
+                  <FaIcon name={skillIconMap[item] || "code"} />
+                  <span>{item}</span>
+                </span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    )
+  }
+
+  if (section.links) {
+    return (
+      <div className="contact-grid">
+        {section.links.map(([label, href, icon]) => (
+          <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" aria-label={`Open ${label}`}>
+            <FaIcon name={icon} />
+            <span>{label}</span>
+          </a>
+        ))}
+      </div>
+    )
+  }
+
+  const list = section.highlights || section.items || []
+  return (
+    <ul className="feature-list">
+      {list.map((item) => (
+        <li key={item}>
+          <FaIcon name={section.itemIcon || section.icon || "terminal"} />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+const cardGradients = {
+  dark: {
+    behindGradient:
+      "radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#c137ffff 0%,#07c6ffff 40%,#07c6ffff 60%,#c137ffff 100%)",
+    innerGradient: "linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)",
+  },
+  light: {
+    behindGradient:
+      "radial-gradient(45% 55% at 55% 20%,rgba(66,255,143,.36) 0%,rgba(66,255,143,0) 100%),radial-gradient(90% 90% at 50% 50%,rgba(76,201,240,.28) 1%,rgba(76,201,240,0) 76%),conic-gradient(from 124deg at 50% 50%,rgba(8,120,61,.28) 0%,rgba(6,109,143,.34) 42%,rgba(8,120,61,.26) 100%)",
+    innerGradient: "linear-gradient(145deg,rgba(255,255,255,.96) 0%,rgba(219,255,235,.88) 100%)",
+  },
+}
+
+const GuiPortfolio = forwardRef(function GuiPortfolio({ activeSection, hybrid = false, theme = "dark" }, ref) {
+  const gradients = cardGradients[theme] || cardGradients.dark
+
+  return (
+    <main className={`gui-portfolio ${hybrid ? "hybrid-pane" : ""}`} ref={ref}>
+      <section className="hero-section" id="hero" data-section="hero">
+        <div className="hero-copy">
+          <p className="prompt-line">nishith@portfolio:~$ ./launch-gui</p>
+          <h1>{profile.name}</h1>
+          <HeroTypingText />
+          <p className="hero-summary">{profile.summary}</p>
+          <div className="profile-note">
+            <span><FaIcon name="locationDot" />{profile.location}</span>
+          </div>
+        </div>
+        <div className="hero-card-wrap">
+          <ProfileCard
+            name={profile.name}
+            title="AI + Cloud Builder"
+            handle={profile.handle}
+            status="Online"
+            contactText="Contact"
+            avatarUrl="avatar.png"
+            showUserInfo={true}
+            enableTilt={!hybrid}
+            behindGradient={gradients.behindGradient}
+            innerGradient={gradients.innerGradient}
+            className="portfolio-card"
+          />
+        </div>
+      </section>
+
+      {sections.map((section) => (
+        <section
+          className={`content-section ${activeSection === section.id ? "section-active" : ""}`}
+          id={section.id}
+          data-section={section.id}
+          key={section.id}
+        >
+          <div className="section-heading">
+            <p>{section.icon ? <FaIcon name={section.icon} /> : null}{section.kicker}</p>
+            <h2>{section.title}</h2>
+          </div>
+          <p className="section-body">{section.body}</p>
+          <SectionContent section={section} />
+        </section>
+      ))}
+    </main>
+  )
+})
+
+export default GuiPortfolio

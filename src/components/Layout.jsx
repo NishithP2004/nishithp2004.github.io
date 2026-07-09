@@ -1,13 +1,61 @@
-import Main from "./Main"
+import { useEffect, useRef, useState } from "react"
+import GuiPortfolio from "./GuiPortfolio"
+import ModeToggle from "./ModeToggle"
 import TerminalWindow from "./TerminalWindow"
+import { sectionByCommand } from "../portfolioData"
+
+const getSystemTheme = () => {
+    if (typeof window === "undefined") return "dark"
+    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"
+}
 
 function Layout() {
+    const [mode, setMode] = useState("gui")
+    const [theme, setTheme] = useState(getSystemTheme)
+    const [activeSection, setActiveSection] = useState("hero")
+    const guiRef = useRef(null)
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: light)")
+        const handleChange = (event) => setTheme(event.matches ? "light" : "dark")
+
+        mediaQuery.addEventListener("change", handleChange)
+        return () => mediaQuery.removeEventListener("change", handleChange)
+    }, [])
+
+    useEffect(() => {
+        document.documentElement.dataset.theme = theme
+    }, [theme])
+
+    const scrollToSection = (command) => {
+        const section = sectionByCommand[command]?.id
+        if (!section || !guiRef.current) return
+
+        setActiveSection(section)
+        const target = guiRef.current.querySelector(`#${section}`)
+        target?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+
     return (
-        <div className="flex flex-row justify-center items-center w-full fixed top-21.25 bottom-8.25">
-            <Main />
-            <TerminalWindow />
+        <div className={`portfolio-shell mode-${mode} theme-${theme}`}>
+            {mode === "gui" && <GuiPortfolio ref={guiRef} activeSection={activeSection} theme={theme} />}
+
+            {mode === "terminal" && (
+                <div className="terminal-only">
+                    <TerminalWindow onCommand={(command) => setActiveSection(sectionByCommand[command]?.id || activeSection)} />
+                </div>
+            )}
+
+            {mode === "hybrid" && (
+                <div className="hybrid-layout">
+                    <GuiPortfolio ref={guiRef} activeSection={activeSection} hybrid theme={theme} />
+                    <TerminalWindow compact onCommand={scrollToSection} />
+                </div>
+            )}
+
+            <ModeToggle mode={mode} onChange={setMode} theme={theme} onThemeChange={setTheme} />
         </div>
     )
 }
 
-export default Layout;
+export default Layout
