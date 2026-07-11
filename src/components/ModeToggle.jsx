@@ -6,9 +6,9 @@ const modes = [
   { id: "hybrid", label: "Hybrid mode", icon: "columns" },
 ]
 
-function ModeToggle({ mode, onChange, theme, onThemeChange }) {
+function ModeToggle({ mode, onChange, theme, onThemeChange, inline = false }) {
   return (
-    <div className="mode-controls">
+    <div className={`mode-controls ${inline ? "mode-controls-inline" : "mode-controls-floating"}`}>
       <div className="mode-toggle" aria-label="Portfolio display mode">
         {modes.map((item) => (
           <button

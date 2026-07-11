@@ -13,11 +13,26 @@ async function sleep(delay) {
     })
 }
 
-function MarkdownRenderer({ content, setIsTyping, scrollRef }) {
+function MarkdownRenderer({ content, setIsTyping, scrollRef, answerNow = false }) {
     const [chunks, setChunks] = useState("")
 
     useEffect(() => {
         let isCancelled = false;
+
+        const scrollToEnd = () => {
+            if (scrollRef?.current) {
+                scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+            }
+        }
+
+        if (answerNow) {
+            setChunks(content || "")
+            setIsTyping(false)
+            window.requestAnimationFrame(scrollToEnd)
+            return () => {
+                isCancelled = true;
+            }
+        }
         
         const typingEffect = async () => {
             let current = "";
@@ -27,9 +42,7 @@ function MarkdownRenderer({ content, setIsTyping, scrollRef }) {
                 setChunks(current)
                 await sleep(0.015)
 
-                if(scrollRef?.current) {
-                    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-                }
+                scrollToEnd()
             }
             if(!isCancelled) setIsTyping(false)
         }
@@ -42,7 +55,7 @@ function MarkdownRenderer({ content, setIsTyping, scrollRef }) {
         return () => {
             isCancelled = true;
         }
-    }, [content, scrollRef, setIsTyping])
+    }, [answerNow, content, scrollRef, setIsTyping])
 
     return (
         <Markdown remarkPlugins={[[remarkGfm, rehypeStarryNight, remark]]}>

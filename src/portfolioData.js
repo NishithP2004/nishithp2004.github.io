@@ -20,6 +20,7 @@ export const profile = {
     ["LinkedIn", "https://www.linkedin.com/in/nishith-p", "linkedin"],
     ["Medium", "https://medium.com/@nishithp", "medium"],
     ["Hugging Face", "https://huggingface.co/NishithP2004", "huggingFace"],
+    ["Kaggle", "https://www.kaggle.com/nishithp", "kaggle"],
     ["Facebook", "https://www.facebook.com/nishithp2004", "facebook"],
     ["Instagram", "https://www.instagram.com/nishith_2004/", "instagram"],
     ["Twitter", "https://twitter.com/nishithp2004", "twitter"],
@@ -94,6 +95,16 @@ export const sections = [
     body:
       "A selection of research-grade and product-minded builds spanning AI agents, sandboxed browsers, voice-first security simulation, browser automation, semantic search, and realtime systems.",
     items: [
+      {
+        name: "CraveLens",
+        year: "2026",
+        description:
+          "Privacy-first Chrome extension that detects food in YouTube videos with on-device FoodNet and Gemma 3n inference, then uses a LangGraph ReAct agent and authenticated Swiggy MCP tools to prepare a personalized, discount-aware cart with live progress and an explicit confirmation gate.",
+        tags: ["On-device AI", "Gemma 3n", "LangGraph", "Swiggy MCP"],
+        liveUrl: "https://cravelens.nishithp.page/",
+        sourceUrl: "https://github.com/NishithP2004/CraveLens",
+        sourceLabel: "Source code",
+      },
       {
         name: "Spectra",
         year: "2025",
@@ -206,13 +217,14 @@ export const sections = [
     icon: "code",
     kicker: "cat skills.json",
     body:
-      "Hands-on stack across frontend, backend, cloud, browser automation, data systems, security, and AI orchestration.",
+      "Differentiated strengths in AI agents, cloud infrastructure, browser automation, backend engineering, retrieval, product interfaces, and security.",
     groups: [
-      ["Frontend", "code", "HTML", "CSS", "JavaScript", "React", "Tailwind CSS"],
-      ["Backend", "server", "Node.js", "Express", "Java", "Python", "Azure Functions", "Socket.IO"],
-      ["Browser Systems", "desktop", "Playwright", "Puppeteer", "Selenium", "noVNC", "Chrome automation", "MCP"],
-      ["Data", "database", "Firebase", "Azure Cosmos DB", "Neo4j", "Redis", "MongoDB", "SQLite", "Vector DBs"],
-      ["Cloud and AI", "robot", "Microsoft Azure", "Google Cloud", "AWS", "Cloudflare", "LangChain / LangGraph", "Langfuse", "Docker", "Kubernetes", "Google ADK"],
+      ["AI & Agents", "robot", "LangChain / LangGraph", "MCP", "Ollama", "Langfuse", "Google ADK"],
+      ["Cloud & Infrastructure", "cloudflare", "Microsoft Azure", "Google Cloud", "AWS", "Cloudflare", "Docker", "Kubernetes"],
+      ["Automation & Browser Systems", "desktop", "Chrome Extensions", "Playwright", "Puppeteer", "Selenium", "Chrome automation", "noVNC"],
+      ["Backend & APIs", "server", "Node.js", "Express", "Python", "Java", "Azure Functions", "Socket.IO"],
+      ["Data & Retrieval", "database", "Vector DBs", "Neo4j", "Redis", "MongoDB", "Azure Cosmos DB", "Firebase", "SQLite"],
+      ["Frontend", "code", "React", "JavaScript", "HTML", "CSS", "Tailwind CSS"],
       ["Security", "shield", "Burp Suite", "Kali Linux tooling", "Nmap", "SQLMap", "CyberChef"],
     ],
   },

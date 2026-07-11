@@ -1,5 +1,6 @@
 import { useState } from "react"
 import FaIcon from "./FaIcon"
+import ModeToggle from "./ModeToggle"
 import { sections } from "../portfolioData"
 
 const navItems = [
@@ -9,8 +10,18 @@ const navItems = [
         .map((section) => [section.title, `#${section.id}`, section.icon]),
 ]
 
-function Header() {
+function Header({ mode, onModeChange, theme, onThemeChange }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    const changeMode = (nextMode) => {
+        onModeChange(nextMode)
+        setIsMenuOpen(false)
+    }
+
+    const changeTheme = (nextTheme) => {
+        onThemeChange(nextTheme)
+        setIsMenuOpen(false)
+    }
 
     return (
         <header className="site-header">
@@ -41,6 +52,13 @@ function Header() {
                         <span>{label}</span>
                     </a>
                 ))}
+                <ModeToggle
+                    inline
+                    mode={mode}
+                    onChange={changeMode}
+                    theme={theme}
+                    onThemeChange={changeTheme}
+                />
             </nav>
         </header>
     )

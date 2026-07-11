@@ -140,6 +140,17 @@ header.site-header {
   flex: 0 0 auto;
 }
 
+.brand-icon {
+  display: block;
+  flex: 0 0 auto;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(36%) sepia(55%) saturate(1089%) hue-rotate(101deg) brightness(88%) contrast(94%);
+}
+
+:root[data-theme="dark"] .brand-icon {
+  filter: brightness(0) saturate(100%) invert(87%) sepia(42%) saturate(1119%) hue-rotate(78deg) brightness(103%) contrast(101%);
+}
+
 .fa-icon.fa-hugging-face {
   display: inline-grid;
   place-items: center;
@@ -651,6 +662,10 @@ footer a:hover {
   height: 1.55rem;
 }
 
+.contact-grid a .brand-icon {
+  display: inline-block;
+}
+
 .contact-grid a span {
   justify-content: center;
   font-size: 0.9rem;
@@ -672,8 +687,11 @@ footer a:hover {
 }
 
 .available-cmds {
+  position: sticky;
+  top: 0;
+  z-index: 3;
   flex-shrink: 0;
-  background: rgba(66, 255, 143, 0.05);
+  background: color-mix(in srgb, var(--terminal-bg) 94%, var(--green) 6%);
   gap: 0.45rem;
   align-items: center;
 }
@@ -739,6 +757,35 @@ footer a:hover {
   margin: 0.75rem 0 0.4rem;
 }
 
+.answer-now-wrap {
+  position: sticky;
+  right: 0;
+  bottom: 0.65rem;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0.65rem;
+  pointer-events: none;
+}
+
+.answer-now-button {
+  min-height: 2.35rem;
+  border: 1px solid var(--green);
+  background: var(--terminal-bg);
+  color: var(--green);
+  padding: 0.45rem 0.75rem;
+  font: 700 0.78rem/1 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.answer-now-button:hover,
+.answer-now-button:focus-visible {
+  background: rgba(66, 255, 143, 0.14);
+  color: var(--strong-copy);
+  outline: none;
+}
+
 #terminal ul {
   padding-left: 1.25rem;
 }
@@ -763,6 +810,8 @@ footer a:hover {
 }
 
 .terminal-window-compact {
+  min-height: 0;
+  overflow: hidden;
   border-width: 0 0 0 1px;
 }
 
@@ -782,6 +831,43 @@ footer a:hover {
   z-index: 40;
   display: flex;
   gap: 0.35rem;
+  align-items: center;
+}
+
+.mode-controls-inline {
+  position: static;
+  display: none;
+}
+
+.scroll-top-button {
+  position: fixed;
+  right: 1rem;
+  bottom: 7rem;
+  z-index: 39;
+  width: 2.7rem;
+  height: 2.7rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--green);
+  background: var(--chrome-bg);
+  color: var(--green);
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  animation: scroll-top-enter 0.2s ease-out;
+}
+
+.scroll-top-button:hover,
+.scroll-top-button:focus-visible {
+  background: rgba(66, 255, 143, 0.16);
+  color: var(--strong-copy);
+  outline: none;
+}
+
+@keyframes scroll-top-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
 }
 
 .mode-toggle,
@@ -876,14 +962,20 @@ footer.site-footer {
   }
 
   .gui-portfolio,
-  .terminal-only,
   .hybrid-layout {
     height: auto;
     min-height: calc(100vh - 125px);
   }
 
+  .terminal-only {
+    height: calc(100vh - 125px);
+    min-height: 0;
+    padding: 0.5rem;
+  }
+
   .terminal-window-compact {
-    min-height: 60vh;
+    height: 60vh;
+    min-height: 0;
     border-width: 1px 0 0;
   }
 
@@ -952,6 +1044,32 @@ footer.site-footer {
     color: var(--green);
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     font-size: 0.82rem;
+  }
+
+  .mode-controls-floating {
+    display: none;
+  }
+
+  .scroll-top-button {
+    bottom: 4.2rem;
+  }
+
+  .header-links.open .mode-controls-inline {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    border-top: 1px solid var(--line-soft);
+    padding-top: 0.65rem;
+  }
+
+  .header-links.open .mode-controls-inline .mode-toggle {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .header-links.open .mode-controls-inline .theme-toggle {
+    flex: 0 0 3rem;
   }
 }
 
@@ -1046,14 +1164,14 @@ footer.site-footer {
   footer.site-footer p:last-child {
     display: none;
   }
-
-  .mode-controls {
-    bottom: 4.2rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .gui-portfolio {
     scroll-behavior: auto;
+  }
+
+  .scroll-top-button {
+    animation: none;
   }
 }

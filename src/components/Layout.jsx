@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import GuiPortfolio from "./GuiPortfolio"
+import Header from "./Header"
 import ModeToggle from "./ModeToggle"
+import ScrollToTop from "./ScrollToTop"
 import TerminalWindow from "./TerminalWindow"
 import { sectionByCommand } from "../portfolioData"
 
@@ -37,6 +39,8 @@ function Layout() {
     }
 
     return (
+        <>
+        <Header mode={mode} onModeChange={setMode} theme={theme} onThemeChange={setTheme} />
         <div className={`portfolio-shell mode-${mode} theme-${theme}`}>
             {mode === "gui" && <GuiPortfolio ref={guiRef} activeSection={activeSection} theme={theme} />}
 
@@ -54,7 +58,9 @@ function Layout() {
             )}
 
             <ModeToggle mode={mode} onChange={setMode} theme={theme} onThemeChange={setTheme} />
+            <ScrollToTop mode={mode} guiRef={guiRef} onScrollTop={() => setActiveSection("hero")} />
         </div>
+        </>
     )
 }
 

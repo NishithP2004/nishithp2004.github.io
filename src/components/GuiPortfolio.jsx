@@ -1,47 +1,54 @@
-import { forwardRef, useEffect, useState } from "react"
+import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import BrandIcon from "./BrandIcon"
 import FaIcon from "./FaIcon"
 import ProfileCard from "./ProfileCard"
 import { profile, sections } from "../portfolioData"
+
+gsap.registerPlugin(ScrollTrigger)
 
 const heroWords = ["AI", "Code", "Curiosity"]
 const longestHeroWordLength = Math.max(...heroWords.map((word) => word.length))
 
 const skillIconMap = {
-  HTML: "html5",
-  CSS: "css3",
-  JavaScript: "js",
+  HTML: "html",
+  CSS: "css",
+  JavaScript: "javaScript",
   React: "react",
-  "Tailwind CSS": "code",
+  "Tailwind CSS": "tailwind",
   "Node.js": "nodeJs",
-  Express: "server",
+  Express: "express",
   Java: "java",
   Python: "python",
   "Azure Functions": "microsoft",
-  "Socket.IO": "server",
+  "Socket.IO": "socketIo",
   Playwright: "desktop",
-  Puppeteer: "desktop",
-  Selenium: "desktop",
+  Puppeteer: "puppeteer",
+  Selenium: "selenium",
   noVNC: "desktop",
-  "Chrome automation": "desktop",
-  MCP: "robot",
-  Firebase: "database",
+  "Chrome automation": "googleChrome",
+  "Chrome Extensions": "googleChrome",
+  MCP: "mcp",
+  Firebase: "firebase",
   "Azure Cosmos DB": "microsoft",
-  Neo4j: "database",
-  Redis: "database",
-  MongoDB: "database",
-  SQLite: "database",
+  Neo4j: "neo4j",
+  Redis: "redis",
+  MongoDB: "mongoDb",
+  SQLite: "sqlite",
   "Vector DBs": "database",
   "Microsoft Azure": "microsoft",
-  "Google Cloud": "google",
+  "Google Cloud": "googleCloud",
   AWS: "aws",
   Cloudflare: "cloudflare",
-  "LangChain / LangGraph": "robot",
+  "LangChain / LangGraph": "langChain",
   Langfuse: "robot",
+  Ollama: "ollama",
   Docker: "docker",
-  Kubernetes: "dharmachakra",
+  Kubernetes: "kubernetes",
   "Google ADK": "google",
-  "Burp Suite": "shield",
-  "Kali Linux tooling": "shield",
+  "Burp Suite": "burpSuite",
+  "Kali Linux tooling": "kaliLinux",
   Nmap: "shield",
   SQLMap: "database",
   CyberChef: "code",
@@ -213,7 +220,7 @@ function SectionContent({ section }) {
             <div className="skill-token-list">
               {items.map((item) => (
                 <span className="skill-token" key={item}>
-                  <FaIcon name={skillIconMap[item] || "code"} />
+                  <BrandIcon name={skillIconMap[item]} fallback={skillIconMap[item] || "code"} />
                   <span>{item}</span>
                 </span>
               ))}
@@ -229,7 +236,7 @@ function SectionContent({ section }) {
       <div className="contact-grid">
         {section.links.map(([label, href, icon]) => (
           <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" aria-label={`Open ${label}`}>
-            <FaIcon name={icon} />
+            <BrandIcon name={icon} fallback={icon} />
             <span>{label}</span>
           </a>
         ))}
@@ -265,9 +272,76 @@ const cardGradients = {
 
 const GuiPortfolio = forwardRef(function GuiPortfolio({ activeSection, hybrid = false, theme = "dark" }, ref) {
   const gradients = cardGradients[theme] || cardGradients.dark
+  const mainRef = useRef(null)
+
+  useImperativeHandle(ref, () => mainRef.current)
+
+  useLayoutEffect(() => {
+    const root = mainRef.current
+    if (!root) return undefined
+
+    const context = gsap.context(() => {
+      const media = gsap.matchMedia()
+
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.timeline({ defaults: { ease: "power3.out" } })
+          .from(".hero-copy > *", { autoAlpha: 0, y: 24, duration: 0.7, stagger: 0.08 })
+          .from(".hero-card-wrap", { autoAlpha: 0, x: 32, scale: 0.97, duration: 0.8 }, "<0.12")
+
+        const isDesktopScroller = window.matchMedia("(min-width: 981px)").matches
+        const scroller = hybrid || isDesktopScroller ? root : undefined
+        root.querySelectorAll(".content-section").forEach((section, index) => {
+          const heading = section.querySelectorAll(".section-heading > *, .section-body")
+          const content = section.querySelectorAll(
+            ".project-card, .experience-card, .skill-group, .feature-list li, .contact-grid a, .browser-lab",
+          )
+          const timeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: section,
+              scroller,
+              start: "top 82%",
+              once: true,
+            },
+            defaults: { ease: "power3.out" },
+          })
+
+          timeline.from(heading, {
+            autoAlpha: 0,
+            x: index % 2 === 0 ? -18 : 18,
+            duration: 0.62,
+            stagger: 0.08,
+          })
+          if (content.length) {
+            timeline.from(content, {
+              autoAlpha: 0,
+              y: 26,
+              scale: 0.985,
+              duration: 0.55,
+              stagger: 0.07,
+            }, "<0.18")
+          }
+        })
+
+        ScrollTrigger.refresh()
+        if (window.location.hash) {
+          const anchor = root.querySelector(window.location.hash)
+          if (anchor) {
+            gsap.delayedCall(0.05, () => {
+              anchor.scrollIntoView({ block: "start" })
+              ScrollTrigger.refresh()
+            })
+          }
+        }
+      })
+
+      return () => media.revert()
+    }, root)
+
+    return () => context.revert()
+  }, [hybrid])
 
   return (
-    <main className={`gui-portfolio ${hybrid ? "hybrid-pane" : ""}`} ref={ref}>
+    <main className={`gui-portfolio ${hybrid ? "hybrid-pane" : ""}`} ref={mainRef}>
       <section className="hero-section" id="hero" data-section="hero">
         <div className="hero-copy">
           <p className="prompt-line">nishith@portfolio:~$ ./launch-gui</p>
