@@ -316,10 +316,6 @@ footer a:hover {
   min-width: 0;
 }
 
-.portfolio-card .pc-card {
-  max-height: min(560px, 70vh);
-}
-
 .content-section {
   scroll-margin-top: 1.5rem;
   padding: clamp(3rem, 7vw, 5rem) 0;
@@ -759,11 +755,11 @@ footer a:hover {
 
 .answer-now-wrap {
   position: sticky;
-  right: 0;
   bottom: 0.65rem;
   z-index: 2;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  width: 100%;
   padding: 0 0.65rem;
   pointer-events: none;
 }

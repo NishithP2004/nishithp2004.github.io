@@ -3,6 +3,7 @@ import MarkdownRenderer from "./MarkdownRenderer"
 import { generateResponse } from "../utils.js"
 
 const welcomeMsg = "Hi, I am Nishith P.\n\nWelcome to my interactive AI-powered portfolio. Type `help` to see the available commands, or try `projects`, `browser`, `skills`, and `contact`."
+const mobileQuery = "(max-width: 980px)"
 
 function Terminal({ onCommand, commandRequest, compact = false }) {
     const [history, setHistory] = useState([{
@@ -13,6 +14,7 @@ function Terminal({ onCommand, commandRequest, compact = false }) {
     const [input, setInput] = useState("")
     const [isTyping, setIsTyping] = useState(true)
     const [answeredNow, setAnsweredNow] = useState(() => new Set())
+    const [allowsAutomaticFocus, setAllowsAutomaticFocus] = useState(() => !window.matchMedia(mobileQuery).matches)
 
     const terminalRef = useRef(null)
     const inputRef = useRef(null)
@@ -56,13 +58,22 @@ function Terminal({ onCommand, commandRequest, compact = false }) {
     }, [commandRequest, executeCommand])
 
     useEffect(() => {
+        const mediaQuery = window.matchMedia(mobileQuery)
+        const updateAutomaticFocus = () => setAllowsAutomaticFocus(!mediaQuery.matches)
+
+        updateAutomaticFocus()
+        mediaQuery.addEventListener("change", updateAutomaticFocus)
+        return () => mediaQuery.removeEventListener("change", updateAutomaticFocus)
+    }, [])
+
+    useEffect(() => {
         const handleWindowClick = () => {
-            if (inputRef.current && !isTyping) inputRef.current.focus();
+            if (allowsAutomaticFocus && inputRef.current && !isTyping) inputRef.current.focus();
         }
 
         window.addEventListener("click", handleWindowClick);
         return () => window.removeEventListener("click", handleWindowClick);
-    }, [isTyping])
+    }, [allowsAutomaticFocus, isTyping])
 
     return (
         <div id="terminal" className={`overflow-auto ${compact ? "terminal-compact" : ""}`} ref={terminalRef}>
@@ -94,7 +105,7 @@ function Terminal({ onCommand, commandRequest, compact = false }) {
             {!isTyping ? (
                 <div className="conversation-input flex flex-row justify-start items-center gap-2 px-2">
                     <span className="terminal-prompt text-blue-400">⚡ nishith@portfolio:~$</span>
-                    <input type="text" ref={inputRef} className="conversation-input text-green-400 w-full outline-none" name="cmd-input" spellCheck={false} value={input} onInput={e => setInput(e.target.value)} autoFocus onKeyDown={(ev) => {
+                    <input type="text" ref={inputRef} className="conversation-input text-green-400 w-full outline-none" name="cmd-input" spellCheck={false} value={input} onInput={e => setInput(e.target.value)} autoFocus={allowsAutomaticFocus} onKeyDown={(ev) => {
                         if (ev.key === "Enter") {
                             executeCommand(input)
                         }

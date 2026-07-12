@@ -3,7 +3,8 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import BrandIcon from "./BrandIcon"
 import FaIcon from "./FaIcon"
-import ProfileCard from "./ProfileCard"
+import HeroConstellation from "./HeroConstellation"
+import "./HeroConstellation.css"
 import { profile, sections } from "../portfolioData"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -257,21 +258,7 @@ function SectionContent({ section }) {
   )
 }
 
-const cardGradients = {
-  dark: {
-    behindGradient:
-      "radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#c137ffff 0%,#07c6ffff 40%,#07c6ffff 60%,#c137ffff 100%)",
-    innerGradient: "linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)",
-  },
-  light: {
-    behindGradient:
-      "radial-gradient(45% 55% at 55% 20%,rgba(66,255,143,.36) 0%,rgba(66,255,143,0) 100%),radial-gradient(90% 90% at 50% 50%,rgba(76,201,240,.28) 1%,rgba(76,201,240,0) 76%),conic-gradient(from 124deg at 50% 50%,rgba(8,120,61,.28) 0%,rgba(6,109,143,.34) 42%,rgba(8,120,61,.26) 100%)",
-    innerGradient: "linear-gradient(145deg,rgba(255,255,255,.96) 0%,rgba(219,255,235,.88) 100%)",
-  },
-}
-
 const GuiPortfolio = forwardRef(function GuiPortfolio({ activeSection, hybrid = false, theme = "dark" }, ref) {
-  const gradients = cardGradients[theme] || cardGradients.dark
   const mainRef = useRef(null)
 
   useImperativeHandle(ref, () => mainRef.current)
@@ -353,19 +340,7 @@ const GuiPortfolio = forwardRef(function GuiPortfolio({ activeSection, hybrid = 
           </div>
         </div>
         <div className="hero-card-wrap">
-          <ProfileCard
-            name={profile.name}
-            title="AI + Cloud Builder"
-            handle={profile.handle}
-            status="Online"
-            contactText="Contact"
-            avatarUrl="avatar.png"
-            showUserInfo={true}
-            enableTilt={!hybrid}
-            behindGradient={gradients.behindGradient}
-            innerGradient={gradients.innerGradient}
-            className="portfolio-card"
-          />
+          <HeroConstellation profile={profile} enableMotion={!hybrid} theme={theme} />
         </div>
       </section>
 
