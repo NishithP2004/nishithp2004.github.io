@@ -41,14 +41,26 @@ export const sections = [
     itemIcon: "terminal",
     kicker: "whoami",
     body:
-      "I build practical AI and cloud systems with a bias for useful interfaces: distributed browser sandboxes, agentic security tooling, semantic search, educational platforms, and scalable full-stack apps.",
+      "I’m a software engineer and researcher drawn to the point where ambitious technical ideas become useful, dependable products.",
+    statement:
+      "I enjoy working end to end—from exploring an idea to shaping the infrastructure, interface, and details that make it useful.",
+    focus: "AI agents / cloud-native systems / security automation / product engineering",
     highlights: [
-      "B.Tech CSE graduate from Amrita Vishwa Vidyapeetham, Bangalore",
-      "Software Engineer Intern at Deepwatch, building production software in a hybrid engineering team",
-      "Currently working on AI agents and learning deeper generative AI frameworks, app development, and Docker workflows",
-      "GitHub Developer Program Member, GitHub Pro user, and active open-source builder",
-      "Beta Microsoft Student Ambassador and former CodeChef ASEB Vice President",
-      "Google Code-in 2019 Finalist and Google Code To Learn 2019 Winner",
+      {
+        label: "Now",
+        title: "Software Engineer Intern at Deepwatch",
+        detail: "Building production software in a hybrid engineering team while deepening work in AI agents, generative AI, and cloud-native development.",
+      },
+      {
+        label: "Education",
+        title: "B.Tech in Computer Science Engineering",
+        detail: "Amrita Vishwa Vidyapeetham, Bengaluru · 2022–2026 · CGPA 8.9.",
+      },
+      {
+        label: "Beyond code",
+        title: "Community leadership and early recognition",
+        detail: "Beta Microsoft Student Ambassador, former CodeChef ASEB Vice President, Google Code-in 2019 Finalist, and Google Code To Learn 2019 Winner.",
+      },
     ],
   },
   {
@@ -93,7 +105,7 @@ export const sections = [
     icon: "code",
     kicker: "ls ./projects",
     body:
-      "A selection of research-grade and product-minded builds spanning AI agents, sandboxed browsers, voice-first security simulation, browser automation, semantic search, and realtime systems.",
+      "A selection of research-grade and product-minded builds spanning AI agents, online assessment, sandboxed browsers, voice-first security simulation, browser automation, semantic search, and realtime systems.",
     items: [
       {
         name: "CraveLens",
@@ -104,6 +116,14 @@ export const sections = [
         liveUrl: "https://cravelens.nishithp.page/",
         sourceUrl: "https://github.com/NishithP2004/CraveLens",
         sourceLabel: "Source code",
+      },
+      {
+        name: "RuneLabs",
+        year: "2025",
+        description:
+          "Production-ready coding and assessment platform for designing, running, and reviewing technical contests end to end. It combines an online judge with configurable MCQ workflows, rich Markdown and TeX authoring, S3-backed media, interactive D3 analytics, detailed participant reports, public profiles, and responsive student and admin experiences.",
+        tags: ["React", "Node.js", "MongoDB", "Docker", "AWS"],
+        liveUrl: "https://runelabs.ignitestudents.club",
       },
       {
         name: "Spectra",
@@ -192,6 +212,15 @@ export const sections = [
       },
     ],
   },
+  {
+    id: "journey",
+    command: "journey",
+    title: "Journey",
+    icon: "terminal",
+    kicker: "git log --story",
+    body:
+      "From early open-source experiments and school leadership to four years of building, competing, leading, and learning at Amrita.",
+  },
   /*
   {
     id: "browser-lab",
@@ -229,25 +258,6 @@ export const sections = [
     ],
   },
   {
-    id: "achievements",
-    command: "achievements",
-    title: "Achievements",
-    icon: "trophy",
-    itemIcon: "trophy",
-    kicker: "cat awards.log",
-    body:
-      "Recognition across design, security research, AI learning, academics, and open-source competitions.",
-    items: [
-      "Adobe Fund for Design grant, 2024 - $1,500",
-      "Microsoft M365 Security Bounty, 2024 - $6,000",
-      "Honorable Mention, Microsoft Developers AI Learning Hackathon, 2024 - $400",
-      "SSF 2021 Awardee, Office of the Principal Scientific Adviser to the GOI",
-      "OCA-Rev Scipio Merit Award, ISC Science topper",
-      "Google Code To Learn 2019 Winner",
-      "Google Code-in 2019 Finalist"
-    ],
-  },
-  {
     id: "education",
     command: "education",
     title: "Education",
@@ -255,11 +265,39 @@ export const sections = [
     itemIcon: "graduationCap",
     kicker: "cat education.md",
     body:
-      "Academic foundation in computer science with strong performance in school-level science and computing.",
+      "A consistent academic path through computer science, grounded in strong school-level performance and four years of engineering study.",
     items: [
-      "B.Tech Computer Science Engineering, Amrita Vishwa Vidyapeetham, Bangalore, 2022-2026, CGPA 8.9",
-      "ISC Grade 12 Computer Science, Bishop Cotton Boys School, 98%",
-      "ICSE Grade 10 Science, Bishop Cotton Boys School, 96.6%",
+      {
+        id: "btech-cse",
+        level: "Undergraduate",
+        period: "2022–2026",
+        qualification: "B.Tech · Computer Science Engineering",
+        institution: "Amrita Vishwa Vidyapeetham",
+        location: "Bengaluru",
+        result: "8.9",
+        resultLabel: "CGPA",
+        featured: true,
+      },
+      {
+        id: "isc-computer-science",
+        level: "Senior Secondary",
+        period: "ISC · Grade 12",
+        qualification: "Computer Science",
+        institution: "Bishop Cotton Boys' School",
+        location: "Bengaluru",
+        result: "98%",
+        resultLabel: "Score",
+      },
+      {
+        id: "icse-science",
+        level: "Secondary",
+        period: "ICSE · Grade 10",
+        qualification: "Science",
+        institution: "Bishop Cotton Boys' School",
+        location: "Bengaluru",
+        result: "96.6%",
+        resultLabel: "Score",
+      },
     ],
   },
   {
@@ -281,9 +319,12 @@ export const commands = [
   "about",
   "experience",
   "projects",
+  "journey",
+  "gallery",
+  "credentials",
+  "achievements",
   // "browser",
   "skills",
-  "achievements",
   "education",
   "contact",
   "repo",
@@ -295,3 +336,7 @@ export const sectionByCommand = sections.reduce((acc, section) => {
   acc[section.command] = section
   return acc
 }, {})
+
+sectionByCommand.gallery = sectionByCommand.journey
+sectionByCommand.credentials = sectionByCommand.journey
+sectionByCommand.achievements = sectionByCommand.journey

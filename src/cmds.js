@@ -1,9 +1,11 @@
 import { commands, profile, sectionByCommand } from "./portfolioData"
+import { credentials, galleryAlbums, journeyEntries } from "./journeyData"
 
 const sectionEmoji = {
   about: "👤",
   experience: "💼",
   projects: "🚀",
+  journey: "🧭",
   "browser-lab": "🌐",
   skills: "🛠️",
   achievements: "🏆",
@@ -15,6 +17,7 @@ const itemEmoji = {
   about: "⚡",
   experience: "▸",
   projects: "▸",
+  journey: "◆",
   "browser-lab": "☁️",
   skills: "◆",
   achievements: "🏅",
@@ -26,6 +29,9 @@ const commandDescriptions = {
   about: "👤 who Nishith is and what he builds",
   experience: "💼 current software engineering and security research work",
   projects: "🚀 key AI, cloud, search, security, and realtime projects",
+  journey: "🧭 curated milestones from early open source through B.Tech",
+  gallery: "🖼️ event albums and selected frames from the journey",
+  credentials: "🛡️ verified awards, certificates, and qualifications",
   browser: "🌐 open the virtual cloud browser lab",
   skills: "🛠️ technical stack and tools",
   achievements: "🏆 awards, bounties, and recognitions",
@@ -51,9 +57,16 @@ const renderSection = (section) => {
         `* ${project.description}`,
         `* 🧰 Stack: ${project.tags.join(", ")}`,
         project.liveUrl ? `* 🔗 Live: [Open project](${project.liveUrl})` : "* 🔒 Live: Not published yet",
-        `* 🐙 ${project.sourceLabel}: [GitHub](${project.sourceUrl})`,
+        project.sourceUrl
+          ? `* 🐙 ${project.sourceLabel || "Source code"}: [GitHub](${project.sourceUrl})`
+          : "* 🔒 Source code: Not publicly available",
         ""
       )
+    })
+  } else if (section.id === "about") {
+    lines.push(section.statement, "", `**Focus:** ${section.focus}`, "")
+    section.highlights.forEach((highlight) => {
+      lines.push(`* **${highlight.label} — ${highlight.title}**: ${highlight.detail}`)
     })
   } else if (section.experiences) {
     section.experiences.forEach((experience) => {
@@ -70,6 +83,16 @@ const renderSection = (section) => {
   } else if (section.groups) {
     section.groups.forEach(([label, , ...items]) => {
       lines.push(`* 🛠️ **${label}**: ${items.join(", ")}`)
+    })
+  } else if (section.id === "education") {
+    section.items.forEach((entry) => {
+      lines.push(
+        `**🎓 ${entry.qualification}**`,
+        `* 🏫 ${entry.institution} · ${entry.location}`,
+        `* 🗓️ ${entry.period}`,
+        `* 📈 ${entry.resultLabel}: ${entry.result}`,
+        ""
+      )
     })
   } else if (section.links) {
     section.links.forEach(([label, href]) => {
@@ -90,11 +113,32 @@ ${commands.map((cmd) => `* **${cmd}**: ${commandDescriptions[cmd]}`).join("\n")}
 
 const sudo = `🔒 User guest is not in the sudoers file. This incident will be logged to /var/portfolio/audit.log.`
 
+const journeyOutput = `### 🧭 Journey
+
+${journeyEntries.length} curated milestones across Build, Compete, Lead, and Learn.
+
+${journeyEntries.map((entry) => `* **${entry.dateLabel} — ${entry.title}**: ${entry.summary}`).join("\n")}
+
+Run \`gallery\` for event albums or \`credentials\` for verified recognition.`
+
+const galleryOutput = `### 🖼️ Journey Gallery
+
+${galleryAlbums.map((album) => `* **${album.date} — ${album.title}**: ${album.media.length} ${album.media.length === 1 ? "frame" : "frames"}${album.postUrl ? ` · [Field note](${album.postUrl})` : ""}`).join("\n")}`
+
+const credentialsOutput = `### 🛡️ Credentials
+
+${credentials.map((item) => `* **${item.title}** — ${item.result} · ${item.issuer} · ${item.date}`).join("\n")}`
+
 const cmds = {
   help,
   sudo,
   ...Object.fromEntries(Object.entries(sectionByCommand).map(([command, section]) => [command, renderSection(section)])),
 }
+
+cmds.journey = journeyOutput
+cmds.gallery = galleryOutput
+cmds.credentials = credentialsOutput
+cmds.achievements = credentialsOutput
 
 cmds.whoami = renderSection(sectionByCommand.about)
 cmds.links = renderSection(sectionByCommand.contact)

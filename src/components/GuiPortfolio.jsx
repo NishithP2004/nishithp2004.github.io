@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import BrandIcon from "./BrandIcon"
 import FaIcon from "./FaIcon"
 import HeroConstellation from "./HeroConstellation"
+import JourneySection from "./JourneySection"
 import "./HeroConstellation.css"
 import { profile, sections } from "../portfolioData"
 
@@ -11,6 +12,10 @@ gsap.registerPlugin(ScrollTrigger)
 
 const heroWords = ["AI", "Code", "Curiosity"]
 const longestHeroWordLength = Math.max(...heroWords.map((word) => word.length))
+
+const openJourneyEntry = (entryId) => {
+  window.dispatchEvent(new CustomEvent("portfolio:journey-entry", { detail: { entryId } }))
+}
 
 const skillIconMap = {
   HTML: "html",
@@ -143,8 +148,39 @@ function BrowserLab() {
   )
 }
 
+function AboutSection({ section }) {
+  return (
+    <div className="about-profile">
+      <div className="about-perspective">
+        <p>{section.statement}</p>
+        <div className="about-focus">
+          <span>Working across</span>
+          <strong>{section.focus}</strong>
+        </div>
+      </div>
+
+      <dl className="about-facts" aria-label="Profile highlights">
+        {section.highlights.map((highlight, index) => (
+          <div className="about-fact" key={highlight.label}>
+            <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+            <div>
+              <dt>{highlight.label}</dt>
+              <dd>
+                <strong>{highlight.title}</strong>
+                <p>{highlight.detail}</p>
+              </dd>
+            </div>
+          </div>
+        ))}
+      </dl>
+    </div>
+  )
+}
+
 function SectionContent({ section }) {
   if (section.id === "browser-lab") return <BrowserLab />
+  if (section.id === "journey") return <JourneySection />
+  if (section.id === "about") return <AboutSection section={section} />
 
   if (section.id === "projects") {
     return (
@@ -157,6 +193,28 @@ function SectionContent({ section }) {
               <span className="project-tags">{project.tags.join(" / ")}</span>
             </div>
             <p>{project.description}</p>
+            {project.evolution ? (
+              <div className="project-evolution" aria-label={`${project.name} evolution`}>
+                <span>Project evolution</span>
+                <ol>
+                  {project.evolution.map((step) => (
+                    <li key={`${step.year}-${step.label}`}>
+                      {step.journeyId ? (
+                        <button type="button" onClick={() => openJourneyEntry(step.journeyId)}>
+                          <time>{step.year}</time>
+                          <span>{step.label}</span>
+                        </button>
+                      ) : (
+                        <div>
+                          <time>{step.year}</time>
+                          <span>{step.label}</span>
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ) : null}
             <div className="project-actions">
               {project.liveUrl ? (
                 <a href={project.liveUrl} target="_blank" rel="noreferrer">
@@ -169,10 +227,45 @@ function SectionContent({ section }) {
                   <span>No live deployment</span>
                 </button>
               )}
-              <a href={project.sourceUrl} target="_blank" rel="noreferrer">
-                <FaIcon name="github" />
-                <span>{project.sourceLabel}</span>
-              </a>
+              {project.sourceUrl ? (
+                <a href={project.sourceUrl} target="_blank" rel="noreferrer">
+                  <FaIcon name="github" />
+                  <span>{project.sourceLabel || "Source code"}</span>
+                </a>
+              ) : (
+                <button type="button" disabled aria-label={`${project.name} source code is not publicly available`}>
+                  <FaIcon name="github" />
+                  <span>Source unavailable</span>
+                </button>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    )
+  }
+
+  if (section.id === "education") {
+    return (
+      <div className="education-track" aria-label="Academic progression">
+        {section.items.map((entry, index) => (
+          <article className={`education-entry ${entry.featured ? "is-featured" : ""}`} key={entry.id}>
+            <div className="education-meta">
+              <span>{String(index + 1).padStart(2, "0")} / {entry.level}</span>
+              <span className="education-period">{entry.period}</span>
+            </div>
+            <div className="education-marker" aria-hidden="true">
+              <FaIcon name="graduationCap" />
+            </div>
+            <div className="education-copy">
+              <div>
+                <p className="education-institution">{entry.institution} · {entry.location}</p>
+                <h3>{entry.qualification}</h3>
+              </div>
+              <div className="education-result" aria-label={`${entry.resultLabel}: ${entry.result}`}>
+                <strong>{entry.result}</strong>
+                <span>{entry.resultLabel}</span>
+              </div>
             </div>
           </article>
         ))}
@@ -280,7 +373,7 @@ const GuiPortfolio = forwardRef(function GuiPortfolio({ activeSection, hybrid = 
         root.querySelectorAll(".content-section").forEach((section, index) => {
           const heading = section.querySelectorAll(".section-heading > *, .section-body")
           const content = section.querySelectorAll(
-            ".project-card, .experience-card, .skill-group, .feature-list li, .contact-grid a, .browser-lab",
+            ".about-perspective, .about-fact, .project-card, .experience-card, .education-entry, .skill-group, .feature-list li, .contact-grid a, .browser-lab",
           )
           const timeline = gsap.timeline({
             scrollTrigger: {

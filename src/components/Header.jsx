@@ -6,7 +6,7 @@ import { sections } from "../portfolioData"
 const navItems = [
     ["Home", "#hero", "terminal"],
     ...sections
-        .filter((section) => ["about", "experience", "projects", "skills", "contact"].includes(section.id))
+        .filter((section) => ["about", "experience", "projects", "journey", "skills", "contact"].includes(section.id))
         .map((section) => [section.title, `#${section.id}`, section.icon]),
 ]
 

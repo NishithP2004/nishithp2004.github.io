@@ -5,5 +5,14 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: "/"
+  base: "/",
+  server: {
+    allowedHosts: [
+      "localhost:5173",
+      "127.0.0.1:5173",
+      "dominant-usually-oyster.ngrok-free.app",
+      "nishithp.page",
+      "nishithp2004.github.io"
+    ]
+  }
 })

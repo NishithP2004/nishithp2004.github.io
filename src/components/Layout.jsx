@@ -34,6 +34,9 @@ function Layout() {
         if (!section || !guiRef.current) return
 
         setActiveSection(section)
+        if (section === "journey") {
+            window.dispatchEvent(new CustomEvent("portfolio:journey-command", { detail: { command } }))
+        }
         const target = guiRef.current.querySelector(`#${section}`)
         target?.scrollIntoView({ behavior: "smooth", block: "start" })
     }
