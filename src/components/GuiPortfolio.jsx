@@ -17,6 +17,48 @@ const openJourneyEntry = (entryId) => {
   window.dispatchEvent(new CustomEvent("portfolio:journey-entry", { detail: { entryId } }))
 }
 
+function ProjectDescription({ name, children }) {
+  const descriptionRef = useRef(null)
+  const [showScrollCue, setShowScrollCue] = useState(false)
+
+  useEffect(() => {
+    const description = descriptionRef.current
+    if (!description) return undefined
+
+    const updateScrollCue = () => {
+      const hasOverflow = description.scrollHeight > description.clientHeight + 1
+      const isAtBottom = description.scrollTop + description.clientHeight >= description.scrollHeight - 2
+      const shouldShowCue = hasOverflow && !isAtBottom
+
+      setShowScrollCue((current) => (current === shouldShowCue ? current : shouldShowCue))
+    }
+
+    updateScrollCue()
+    description.addEventListener("scroll", updateScrollCue, { passive: true })
+
+    const resizeObserver = new ResizeObserver(updateScrollCue)
+    resizeObserver.observe(description)
+
+    return () => {
+      description.removeEventListener("scroll", updateScrollCue)
+      resizeObserver.disconnect()
+    }
+  }, [children])
+
+  return (
+    <div className={`project-description-shell ${showScrollCue ? "has-more" : ""}`}>
+      <p ref={descriptionRef} className="project-description" tabIndex={0} aria-label={`${name} description`}>
+        {children}
+      </p>
+      {showScrollCue ? (
+        <span className="project-scroll-cue" aria-hidden="true">
+          scroll ↓
+        </span>
+      ) : null}
+    </div>
+  )
+}
+
 const skillIconMap = {
   HTML: "html",
   CSS: "css",
@@ -187,34 +229,38 @@ function SectionContent({ section }) {
       <div className="project-grid">
         {section.items.map((project) => (
           <article className="project-card" key={project.name}>
-            <div>
+            <div className="project-card-header">
               <p>{project.year}</p>
               <h3>{project.name}</h3>
               <span className="project-tags">{project.tags.join(" / ")}</span>
             </div>
-            <p>{project.description}</p>
-            {project.evolution ? (
-              <div className="project-evolution" aria-label={`${project.name} evolution`}>
-                <span>Project evolution</span>
-                <ol>
-                  {project.evolution.map((step) => (
-                    <li key={`${step.year}-${step.label}`}>
-                      {step.journeyId ? (
-                        <button type="button" onClick={() => openJourneyEntry(step.journeyId)}>
-                          <time>{step.year}</time>
-                          <span>{step.label}</span>
-                        </button>
-                      ) : (
-                        <div>
-                          <time>{step.year}</time>
-                          <span>{step.label}</span>
-                        </div>
-                      )}
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            ) : null}
+            <div className="project-card-content">
+              <ProjectDescription name={project.name}>
+                {project.description}
+              </ProjectDescription>
+              {project.evolution ? (
+                <div className="project-evolution" aria-label={`${project.name} evolution`}>
+                  <span>Project evolution</span>
+                  <ol>
+                    {project.evolution.map((step) => (
+                      <li key={`${step.year}-${step.label}`}>
+                        {step.journeyId ? (
+                          <button type="button" onClick={() => openJourneyEntry(step.journeyId)}>
+                            <time>{step.year}</time>
+                            <span>{step.label}</span>
+                          </button>
+                        ) : (
+                          <div>
+                            <time>{step.year}</time>
+                            <span>{step.label}</span>
+                          </div>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ) : null}
+            </div>
             <div className="project-actions">
               {project.liveUrl ? (
                 <a href={project.liveUrl} target="_blank" rel="noreferrer">

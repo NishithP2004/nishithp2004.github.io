@@ -513,6 +513,92 @@ footer a:hover {
   padding: 1rem;
 }
 
+.project-card {
+  display: grid;
+  height: clamp(29rem, 62vh, 32rem);
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-content: stretch;
+  justify-content: initial;
+  overflow: hidden;
+}
+
+.project-card-header {
+  min-width: 0;
+}
+
+.project-card-content {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.project-description-shell {
+  position: relative;
+  min-height: 0;
+  flex: 1;
+}
+
+.project-description-shell::after {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0;
+  left: 0;
+  height: 2rem;
+  background: linear-gradient(to bottom, transparent, var(--card-bg) 88%);
+  backdrop-filter: blur(1px);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.project-description-shell.has-more::after {
+  opacity: 1;
+}
+
+.project-description {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: 0 0.55rem 1.25rem 0;
+  scrollbar-color: rgba(66, 255, 143, 0.5) transparent;
+  scrollbar-width: thin;
+}
+
+.project-scroll-cue {
+  position: absolute;
+  z-index: 1;
+  right: 0.9rem;
+  bottom: 0.35rem;
+  color: var(--green);
+  font: 700 0.63rem/1 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+.project-description::-webkit-scrollbar {
+  width: 0.32rem;
+}
+
+.project-description::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.project-description::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(66, 255, 143, 0.45);
+}
+
+.project-description:focus-visible {
+  border-radius: 0.2rem;
+  outline: 2px solid rgba(66, 255, 143, 0.48);
+  outline-offset: 0.18rem;
+}
+
 .project-card p,
 .skill-group p,
 .experience-card p {
@@ -2397,6 +2483,7 @@ footer.site-footer {
 
   .project-card {
     flex: 0 0 min(84vw, 360px);
+    height: clamp(29rem, 68dvh, 32rem);
     scroll-snap-align: start;
   }
 
